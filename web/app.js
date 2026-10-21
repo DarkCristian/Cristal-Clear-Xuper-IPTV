@@ -1,5 +1,5 @@
 import {parseXMLTV,nowNext,mergeGuides,readXMLTV} from './epg.js';
-import {SOURCES,parseM3U,mergeChannels,filterChannels,spanishOnly,safeURL} from './core.js';
+import {SOURCES,parseM3U,mergeChannels,filterChannels,spanishOnly,safeURL,compareCountries} from './core.js';
 const $=id=>document.getElementById(id);
 let epgProviders=[],guideSources=new Map();
 let metadata={},catalogInfo=null,guide=new Map(),currentChannel=null,epgSequence=0;
@@ -75,7 +75,7 @@ const categoryLabels={animation:'Animación',auto:'Autos',business:'Negocios',cl
 function categoryName(id){return categoryLabels[id]||id}
 function countryName(id){try{return id==='ZZ'?'Sin país informado':new Intl.DisplayNames(['es'],{type:'region'}).of(id)}catch{return id}}
 function fillFacets(){
- const countries=[...new Set(channels.map(c=>c.country))].sort((a,b)=>countryName(a).localeCompare(countryName(b),'es'));
+ const countries=[...new Set(channels.map(c=>c.country))].sort(compareCountries);
  const categories=[...new Set(channels.flatMap(c=>c.categories))].sort((a,b)=>categoryName(a).localeCompare(categoryName(b),'es'));
  $('country').replaceChildren(new Option('Todos los países','all'));for(const id of countries)$('country').add(new Option(countryName(id),id));
  $('category').replaceChildren(new Option('Todas las categorías','all'));for(const id of categories)$('category').add(new Option(categoryName(id),id));

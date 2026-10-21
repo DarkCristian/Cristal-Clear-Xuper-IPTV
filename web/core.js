@@ -32,8 +32,28 @@ export function filterChannels(channels,{query='',source='all',favorites=null,co
 
 export function spanishOnly(spanish,english,metadata={}){
  const urls=new Set(english.map(c=>c.url));const ids=new Set(english.map(c=>c.tvgId).filter(Boolean));
- return mergeChannels([spanish]).filter(c=>{
+ return orderChannels(mergeChannels([spanish]).filter(c=>{
   const m=metadata[c.tvgId];
   return !urls.has(c.url)&&(!c.tvgId||!ids.has(c.tvgId))&&(!m?.languages?.length||(m.languages.includes('spa')&&!m.languages.includes('eng')));
- }).map(c=>{const m=metadata[c.tvgId]||metadata[c.tvgId.split('@')[0]]||{};return {...c,country:m.country||'ZZ',categories:m.categories?.length?m.categories:c.group.split(';').map(x=>x.trim().toLowerCase()).filter(Boolean),languages:['spa']};});
+ }).map(c=>{const m=metadata[c.tvgId]||metadata[c.tvgId.split('@')[0]]||{};return {...c,country:m.country||'ZZ',categories:m.categories?.length?m.categories:c.group.split(';').map(x=>x.trim().toLowerCase()).filter(Boolean),languages:['spa']};}));
+}
+
+const channelCollator=new Intl.Collator('es',{numeric:true,sensitivity:'base'});
+const regionNames=new Intl.DisplayNames(['es'],{type:'region'});
+export function countryLabel(code){try{return !code||code==='ZZ'?'Sin país informado':regionNames.of(code)}catch{return code||'Sin país informado'}}
+export function compareCountries(a,b){
+ if(a===b)return 0;if(a==='AR')return -1;if(b==='AR')return 1;
+ if(!a||a==='ZZ')return 1;if(!b||b==='ZZ')return -1;
+ return channelCollator.compare(countryLabel(a),countryLabel(b))||channelCollator.compare(a,b);
+}
+export function isESPN(channel){return /(?:^|\b)ESPN(?:\b|\d)/i.test(channel.name||'')||/^ESPN/i.test(channel.tvgId||'')}
+export function orderChannels(channels){
+ const rank=c=>c.country==='AR'?0:isESPN(c)?1:2;
+ const argentinaFeed=c=>/@Argentin(?:a|e)(?:$|[^a-z])/i.test(c.tvgId||'')?0:1;
+ return [...channels].sort((a,b)=>{
+  const group=rank(a)-rank(b);if(group)return group;
+  if(rank(a)===1){const feed=argentinaFeed(a)-argentinaFeed(b);if(feed)return feed;}
+  else {const country=compareCountries(a.country,b.country);if(country)return country;}
+  return channelCollator.compare(a.name||'',b.name||'')||channelCollator.compare(a.tvgId||'',b.tvgId||'')||channelCollator.compare(a.id||'',b.id||'');
+ });
 }
