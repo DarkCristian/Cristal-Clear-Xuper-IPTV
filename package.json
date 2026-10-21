@@ -1,0 +1,54 @@
+{
+  "name": "cristal-clear-xuper-iptv",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Cliente IPTV multiplataforma",
+  "author": "Cristian Carroccio",
+  "license": "MIT",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "web": "python3 -m http.server 8080 --bind 127.0.0.1 --directory web",
+    "test": "node --test tests/*.test.js",
+    "prepare:targets": "node scripts/prepare.mjs",
+    "build:windows": "electron-builder --win nsis portable",
+    "build:linux": "electron-builder --linux AppImage",
+    "catalog:update": "python3 scripts/update-catalog.py",
+    "epg:channels": "python3 scripts/epg-channels.py"
+  },
+  "devDependencies": {
+    "electron": "45.0.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "ar.com.cristalclear.iptv",
+    "productName": "Cristal Clear Xuper IPTV",
+    "files": [
+      "web/**/*",
+      "desktop/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "signAndEditExecutable": false
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "AudioVideo"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "compression": "normal"
+  }
+}

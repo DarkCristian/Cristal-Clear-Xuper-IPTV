@@ -1,0 +1,10 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import {parseM3U,spanishOnly} from '../web/core.js';
+process.chdir(fileURLToPath(new URL('../',import.meta.url)));
+const read=n=>readFile('web/data/'+n,'utf8');
+const meta=JSON.parse(await read('metadata.json'));
+const catalog=spanishOnly(parseM3U(await read('spa.m3u'),'spa'),parseM3U(await read('eng.m3u'),'eng'),meta.channels);
+await writeFile('web/data/allowed-ids.json',JSON.stringify([...new Set(catalog.map(c=>c.tvgId).filter(Boolean))]));
+const report={generatedAt:meta.generatedAt,urls:catalog.length,channels:new Set(catalog.map(c=>c.tvgId)).size,countries:[...new Set(catalog.map(c=>c.country))].sort(),categories:[...new Set(catalog.flatMap(c=>c.categories))].sort()};
+await writeFile('web/data/catalog-report.json',JSON.stringify(report,null,2));console.log(report);

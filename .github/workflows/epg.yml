@@ -1,0 +1,44 @@
+name: Generate Spanish XMLTV
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  guide:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Checkout iptv-org EPG tools
+        uses: actions/checkout@v4
+        with:
+          repository: iptv-org/epg
+          ref: master
+          path: epg-tools
+      - name: Install EPG tools
+        run: npm ci
+        working-directory: epg-tools
+      - name: Select Spanish channels by exact ID
+        run: |
+          node scripts/catalog-report.mjs
+          python3 scripts/epg-channels.py --epg-root epg-tools
+      - name: Generate programmes
+        run: npm run grab -- --channels=../epg/channels.xml --lang=es --days=2 --maxConnections=2 --timeout=15000 --output=../web/data/guide.xml
+        working-directory: epg-tools
+      - name: Require real programmes
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as E
+          root=E.parse('web/data/guide.xml').getroot()
+          assert root.findall('programme'), 'The providers returned no programmes'
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cristal-clear-xmltv
+          path: |
+            web/data/guide.xml
+            epg/channels.xml
+          if-no-files-found: error
