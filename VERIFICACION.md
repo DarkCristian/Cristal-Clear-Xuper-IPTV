@@ -25,3 +25,7 @@ Estado: prototipo experimental. El estado de compilación de cada destino se inf
 
 - Compilación final 0.2.1 aprobada para Windows, Linux y Android; web/extensión empaquetadas: https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39679556584
 - Caché PWA: comprobada eliminación de versiones anteriores y lectura offline desde la caché actual.
+
+## Corrección de entrega de extensión
+
+La extensión y la web se publican como artifacts separados. Se comprobó que el ZIP de extensión contiene manifest.json directamente en la raíz y que existen los archivos declarados y las dependencias locales de la interfaz. Esta comprobación de empaquetado se ejecuta en el workflow antes de publicar. No sustituye una prueba de instalación en el Chrome del usuario.

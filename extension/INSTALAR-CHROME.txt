@@ -1,0 +1,11 @@
+CRISTAL CLEAR XUPER IPTV — EXTENSIÓN CHROME / EDGE
+
+1. Extraer todo este ZIP en una carpeta.
+2. Abrir chrome://extensions (o edge://extensions).
+3. Activar Modo de desarrollador.
+4. Pulsar Cargar extensión sin empaquetar / Cargar descomprimida.
+5. Elegir ESTA carpeta: contiene manifest.json, background.js e index.html.
+6. Abrir la aplicación desde el icono de la extensión.
+
+No seleccionar el archivo ZIP. Mantener la carpeta después de instalarla.
+Este paquete solo contiene la extensión; la web se distribuye por separado.

@@ -8,7 +8,7 @@ Alternativa independiente de código abierto inspirada en aplicaciones populares
 
 ## Descargas experimentales
 
-[Compilaciones verificadas de la versión 0.2.1](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39679556584). En Artifacts: `cristal-clear-windows` (instalador y portable), `cristal-clear-linux` (AppImage), `cristal-clear-android-debug` (APK) y `cristal-clear-web-extension`. Se necesita iniciar sesión en GitHub para descargar artifacts. No es una release estable ni una certificación de reproducción de todas las señales.
+[Compilaciones verificadas de la versión 0.2.1](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39679556584). En Artifacts: `cristal-clear-windows` (instalador y portable), `cristal-clear-linux` (AppImage), `cristal-clear-android-debug` (APK) y los paquetes de navegador indicados abajo. Se necesita iniciar sesión en GitHub para descargar artifacts. No es una release estable ni una certificación de reproducción de todas las señales.
 
 ## Funciones
 
@@ -24,7 +24,13 @@ La clasificación lingüística depende de los índices públicos, no de un aná
 
 ## Extensión Chrome / Edge
 
-Descargar el código y ejecutar `node scripts/prepare.mjs` (o usar la carpeta generada incluida en un paquete de código). Abrir `chrome://extensions` o `edge://extensions`, activar Modo de desarrollador y **Cargar descomprimida** → `build/extension/`. Pulsar el icono para abrir el cliente. Es una extensión de navegador, no un addon Kodi.
+Descargar el artifact **`cristal-clear-extension-chrome`** de la última ejecución del workflow. Extraer el ZIP en una carpeta. El archivo **`manifest.json` queda directamente en la raíz**, junto a `background.js`, `index.html` e `INSTALAR-CHROME.txt`.
+
+Abrir `chrome://extensions` o `edge://extensions`, activar Modo de desarrollador y **Cargar descomprimida** → elegir la carpeta recién extraída. No hace falta buscar subcarpetas `web` o `build`. Pulsar el icono para abrir el cliente.
+
+La web se entrega por separado como **`cristal-clear-web`**. Los artifacts antiguos llamados `cristal-clear-web-extension` mezclaban ambos destinos; reemplazarlos por la nueva descarga de extensión.
+
+Para desarrollar desde el código fuente: `node scripts/prepare.mjs` genera `build/extension/`. `node scripts/check-extension.mjs` comprueba el manifiesto y sus archivos antes de publicar. Es una extensión de navegador, no un addon Kodi.
 
 ## Web / PWA
 
