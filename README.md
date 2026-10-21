@@ -62,6 +62,8 @@ La compilación Android local encontró un bloqueo de acceso de Gradle a los rep
 
 [iptv-org/epg](https://github.com/iptv-org/epg) proporciona herramientas de generación, no una única URL oficial universal de guía. Sus servidores comunitarios publicados aparecían sin guías disponibles al revisar el proyecto el 21/10/2026. Este cliente no inventa programas ni incluye un enlace universal supuesto.
 
+La copia inicial `web/data/guide.xml`, generada el 21/10/2026 con iptv-org/epg, contiene 238 programas de 10 señales; otros 2 canales consultados no devolvieron programas. Es una instantánea parcial, no una guía universal ni un servicio actualizado en tiempo real. Cuando no hay programa vigente se muestra «Sin Informar».
+
 `epg/channels.xml` selecciona candidatos reales en español por coincidencia exacta de ID del catálogo. La selección prioriza fuentes como mi.tv, reportv y otras disponibles; que un canal tenga un candidato no garantiza que el proveedor devuelva programas.
 
 Para generar una guía, ejecutar manualmente el workflow **Generate Spanish XMLTV**. Descargar el artifact `cristal-clear-xmltv`, importar `guide.xml` en el cliente, o alojarlo con CORS y configurar su URL. También puede copiarse a `web/data/guide.xml` antes de compilar para que se cargue automáticamente. No existe un servicio propio de EPG alojado por este proyecto ni se promete cobertura de todos los canales.
