@@ -22,3 +22,6 @@ Estado: prototipo experimental. El estado de compilación de cada destino se inf
 - Interfaz base probada de nuevo en Electron Linux. La ejecución de la compilación 0.2.1 se informa en GitHub Actions; los binarios 0.2.0 son de la entrega anterior.
 
 - Prueba de interfaz con respuestas reales descargadas: guía incluida + Argentina + archivo gzip español, 3 fuentes y 21 señales con datos combinados. Se verificó el selector, aliases y descompresión en el DOM real.
+
+- Compilación final 0.2.1 aprobada para Windows, Linux y Android; web/extensión empaquetadas: https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39679556584
+- Caché PWA: comprobada eliminación de versiones anteriores y lectura offline desde la caché actual.

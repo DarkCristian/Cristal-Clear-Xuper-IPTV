@@ -8,7 +8,7 @@ Alternativa independiente de código abierto inspirada en aplicaciones populares
 
 ## Descargas experimentales
 
-[Compilaciones anteriores verificadas de la versión 0.2.0](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39678002074). En Artifacts: `cristal-clear-windows` (instalador y portable), `cristal-clear-linux` (AppImage), `cristal-clear-android-debug` (APK) y `cristal-clear-web-extension`. Se necesita iniciar sesión en GitHub para descargar artifacts. No es una release estable ni una certificación de reproducción de todas las señales.
+[Compilaciones verificadas de la versión 0.2.1](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39679556584). En Artifacts: `cristal-clear-windows` (instalador y portable), `cristal-clear-linux` (AppImage), `cristal-clear-android-debug` (APK) y `cristal-clear-web-extension`. Se necesita iniciar sesión en GitHub para descargar artifacts. No es una release estable ni una certificación de reproducción de todas las señales.
 
 ## Funciones
 
