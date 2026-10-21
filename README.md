@@ -1,8 +1,14 @@
 # Cristal Clear Xuper IPTV
 
+[![Build experimental clients](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/workflows/build.yml/badge.svg)](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/workflows/build.yml)
+
 Alternativa independiente de código abierto inspirada en aplicaciones populares de streaming, con listas IPTV públicas en español y guía XMLTV. No aloja ni controla las emisiones de terceros. El contenido se reproduce desde sus proveedores y está sujeto a sus derechos y condiciones.
 
 **Versión experimental 0.2.0.** Proyecto propio: el ZIP de referencia era una extensión Chromium compilada, sin fuentes de desarrollo ni licencia en la raíz. No se copiaron sus bundles, imágenes o marcas, por lo que este repositorio no se presenta como fork de aplicaciones comerciales.
+
+## Descargas experimentales
+
+[Compilaciones verificadas de la versión 0.2.0](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39678002074). En Artifacts: `cristal-clear-windows` (instalador y portable), `cristal-clear-linux` (AppImage), `cristal-clear-android-debug` (APK) y `cristal-clear-web-extension`. Se necesita iniciar sesión en GitHub para descargar artifacts. No es una release estable ni una certificación de reproducción de todas las señales.
 
 ## Funciones
 
@@ -56,7 +62,7 @@ gradle assembleDebug
 
 APK de prueba: `android/app/build/outputs/apk/debug/app-debug.apk`. Android mínimo 6.0 (API 23), WebView actualizado. Flechas/Enter para navegar, controles Media3 para reproducir, Atrás para volver. El video se pausa al salir a segundo plano. La compatibilidad con controles remotos y códecs debe comprobarse en dispositivos. Permite HTTP para fuentes públicas antiguas; no introducir credenciales en esas listas.
 
-La compilación Android local encontró un bloqueo de acceso de Gradle a los repositorios Maven en este entorno. El workflow de GitHub debe completar esa verificación antes de afirmar que hay una APK compilada.
+La compilación local encontró un bloqueo de acceso de Gradle a Maven. La compilación remota de GitHub Actions sí generó la APK debug correctamente; aún falta probarla en dispositivos físicos.
 
 ## Guía XMLTV de iptv-org/epg
 
