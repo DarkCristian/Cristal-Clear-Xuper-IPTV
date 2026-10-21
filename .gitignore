@@ -5,3 +5,8 @@ android/local.properties
 android/app/build/
 *.jks
 *.keystore
+
+build/
+research/
+android/app/src/main/assets/
+epg-tools/
