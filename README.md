@@ -4,11 +4,11 @@
 
 Alternativa independiente de código abierto inspirada en aplicaciones populares de streaming, con listas IPTV públicas en español y guía XMLTV. No aloja ni controla las emisiones de terceros. El contenido se reproduce desde sus proveedores y está sujeto a sus derechos y condiciones.
 
-**Versión experimental 0.2.0.** Proyecto propio: el ZIP de referencia era una extensión Chromium compilada, sin fuentes de desarrollo ni licencia en la raíz. No se copiaron sus bundles, imágenes o marcas, por lo que este repositorio no se presenta como fork de aplicaciones comerciales.
+**Versión experimental 0.2.1.** Proyecto propio: el ZIP de referencia era una extensión Chromium compilada, sin fuentes de desarrollo ni licencia en la raíz. No se copiaron sus bundles, imágenes o marcas, por lo que este repositorio no se presenta como fork de aplicaciones comerciales.
 
 ## Descargas experimentales
 
-[Compilaciones verificadas de la versión 0.2.0](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39678002074). En Artifacts: `cristal-clear-windows` (instalador y portable), `cristal-clear-linux` (AppImage), `cristal-clear-android-debug` (APK) y `cristal-clear-web-extension`. Se necesita iniciar sesión en GitHub para descargar artifacts. No es una release estable ni una certificación de reproducción de todas las señales.
+[Compilaciones anteriores verificadas de la versión 0.2.0](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39678002074). En Artifacts: `cristal-clear-windows` (instalador y portable), `cristal-clear-linux` (AppImage), `cristal-clear-android-debug` (APK) y `cristal-clear-web-extension`. Se necesita iniciar sesión en GitHub para descargar artifacts. No es una release estable ni una certificación de reproducción de todas las señales.
 
 ## Funciones
 
@@ -17,7 +17,7 @@ Alternativa independiente de código abierto inspirada en aplicaciones populares
 - Incluye canales hispanohablantes de España, Latinoamérica y otros países. Portugués y otros idiomas quedan fuera. País de origen no significa disponibilidad territorial.
 - Buscador sin tildes, favoritos locales, paginación, copias de respaldo y actualización de listas.
 - Reproductor HLS, pantalla completa y selector de variantes cuando la señal las ofrece.
-- Guía XMLTV: programa actual y próximo, importación de archivo o URL, vinculación por `tvg-id` exacto y horas en la zona local. Muestra «Sin Informar» cuando faltan datos.
+- Guía XMLTV: programa actual y próximo, importación de archivo o URL, vinculación por `tvg-id`, base sin ambigüedad o equivalencia explícita y horas en la zona local. Muestra «Sin Informar» cuando faltan datos.
 - Extensión Chrome/Edge, web/PWA, escritorio Electron Windows/Linux y proyecto Android con reproductor Media3 nativo, launcher móvil y Android TV.
 
 La clasificación lingüística depende de los índices públicos, no de un análisis de audio. Una URL puede cambiar de contenido o emitir programas en otro idioma. No se garantiza que toda emisión sea correcta o esté disponible.
@@ -87,7 +87,7 @@ cd epg-tools
 npm run grab -- --channels=../epg/channels.xml --lang=es --days=2 --maxConnections=2 --output=../web/data/guide.xml
 ```
 
-No se descarga programación para IDs ajenos al catálogo español. No hay búsqueda aproximada por nombre: evita asociar por error señales regionales distintas. No se aceptan DTD ni entidades XML. La importación admite XMLTV sin comprimir, hasta 40 MB.
+No se descarga programación para IDs ajenos al catálogo español. No hay búsqueda aproximada por nombre. Desde 0.2.1 se admiten IDs base únicamente cuando hay un solo feed permitido y equivalencias explícitas comprobadas por fuente; las variantes ambiguas quedan sin asociación. Se elimina sin resolver la declaración convencional de xmltv.dtd; se rechazan otras DTD y entidades externas. La importación admite XML y XML.GZ, con límite de 40 MB tanto antes como después de descomprimir. Las fuentes se combinan: la última cargada tiene prioridad si hay programas simultáneos y las anteriores completan los huecos.
 
 ## Fuentes, categorías y actualización
 
@@ -120,3 +120,13 @@ En la máxima medida permitida por la legislación aplicable, el software se ofr
 Leer [DISCLAIMER.md](DISCLAIMER.md) para el aviso completo y el procedimiento de reporte. También está disponible dentro del cliente. No existe afiliación con aplicaciones comerciales ni con sus titulares.
 
 Código propio: [MIT](LICENSE). HLS.js conserva su licencia BSD-2-Clause en `web/vendor/HLS-LICENSE`; los datos de iptv-org conservan su licencia en `web/data/IPTV-LICENSE`. Las emisiones conservan sus derechos originales.
+
+## Fuentes EPG adicionales · 0.2.1
+
+Se revisaron los enlaces propuestos y se agregaron seis fuentes seleccionables: TDTChannels, Open EPG Argentina/España/México/Perú y EPGShare España. Se comprobó respuesta HTTP y contenido XMLTV el 21/10/2026; no es una garantía de actualizaciones futuras. No se descargan todas automáticamente ni se agregan los canales ingleses de las guías. El catálogo español sigue siendo la lista de inclusión.
+
+Hay 31 equivalencias explícitas de IDs. El resto solo se vincula por ID exacto o base única; los canales sin programa vigente muestran «Sin Informar». Para importar un archivo con IDs propios de un proveedor, elegir antes su nombre en **Configurar XMLTV → Fuentes comprobadas**.
+
+La web y Android WebView pueden bloquear URLs sin CORS. En ese caso descargar el archivo desde el proveedor e importarlo, o servirlo con los encabezados CORS correspondientes. La extensión solicita acceso a los tres dominios específicos de estas guías.
+
+[Revisión de las tres fuentes propuestas y resultados](docs/EPG-SOURCES.md). Free-TV Argentina aporta un catálogo e identificadores, no programación horaria. El addon Flow consulta una API con autenticación y requiere suscripción; no se copiaron su código, recursos de marca ni datos de cuentas. Su licencia de código no equivale a permiso sobre la programación de la plataforma.

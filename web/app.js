@@ -1,6 +1,7 @@
-import {parseXMLTV,nowNext} from './epg.js';
+import {parseXMLTV,nowNext,mergeGuides,readXMLTV} from './epg.js';
 import {SOURCES,parseM3U,mergeChannels,filterChannels,spanishOnly,safeURL} from './core.js';
 const $=id=>document.getElementById(id);
+let epgProviders=[],guideSources=new Map();
 let metadata={},catalogInfo=null,guide=new Map(),currentChannel=null,epgSequence=0;
 let channels=[],country='all',category='all',onlyFavorites=false,limit=80,hls=null,generation=0;
 function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
@@ -20,7 +21,7 @@ async function loadSource(s){
 }
 async function refresh(){
  $('refresh').disabled=true;$('status').textContent='Actualizando catálogo español y exclusión de inglés…';
- try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=spanishOnly(results[0].data,results[1].data,metadata);fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Solo español; inglés y bilingües español/inglés excluidos según índices y metadatos.';render();loadGuide()}
+ try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=spanishOnly(results[0].data,results[1].data,metadata);fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Solo español; inglés y bilingües español/inglés excluidos según índices y metadatos.';render();await initProviders();const savedURL=readJSON('cristal.epgUrl','');await loadGuide(false,true);if(savedURL)loadGuide()}
  finally{$('refresh').disabled=false}
 }
 function render(){
@@ -87,16 +88,21 @@ function renderGuide(){
  const format=p=>new Date(p.start).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
  for(const text of [now?`Ahora · ${format(now)} — ${now.title}`:'Ahora · Sin Informar',next?`Después · ${format(next)} — ${next.title}`:'Después · Sin Informar']){const p=document.createElement('p');p.textContent=text;box.append(p)}
 }
-async function acceptGuide(text,label){const parsed=parseXMLTV(text,allowedEPG());if(!parsed.size)throw Error('Sin programas con tvg-id coincidente en el catálogo');guide=parsed;$('epgStatus').textContent=`${label}: ${guide.size} señales con programación cargada. Horarios en tu zona local.`;renderGuide()}
-async function loadGuide(custom=false){
- const seq=++epgSequence;const url=custom?$('epgUrl').value.trim():readJSON('cristal.epgUrl','');
+async function acceptGuide(text,label,aliases={},key=label){const parsed=parseXMLTV(text,allowedEPG(),aliases);if(!parsed.size)throw Error('Sin programas con tvg-id coincidente en el catálogo');guideSources.delete(key);guideSources.set(key,parsed);guide=mergeGuides([...guideSources.values()].reverse());$('epgStatus').textContent=`${label}: ${parsed.size} señales reconocidas; ${guideSources.size} fuente(s), ${guide.size} señales con datos combinados. Horarios en tu zona local.`;renderGuide()}
+async function loadGuide(custom=false,included=false){
+ const seq=++epgSequence;const url=included?'':custom?$('epgUrl').value.trim():readJSON('cristal.epgUrl','');
  if(custom&&!safeURL(url)){$('epgStatus').textContent='Ingresá una URL HTTP o HTTPS válida.';return}
  $('epgStatus').textContent='Cargando XMLTV…';
- try{const r=await fetch(url||'data/guide.xml',{signal:AbortSignal.timeout(18000),cache:'no-store'});if(!r.ok)throw Error(`HTTP ${r.status}`);const text=await r.text();if(seq!==epgSequence)return;await acceptGuide(text,url?'Guía externa':'Guía incluida');if(custom)save('cristal.epgUrl',url)}
+ try{const r=await fetch(url||'data/guide.xml',{signal:AbortSignal.timeout(18000),cache:'no-store'});if(!r.ok)throw Error(`HTTP ${r.status}`);const text=await readXMLTV(r);if(seq!==epgSequence)return;const provider=epgProviders.find(p=>p.url===url);await acceptGuide(text,url?'Guía externa':'Guía incluida',provider?.aliases||{},url||'included');if(custom)save('cristal.epgUrl',url)}
  catch(e){if(seq===epgSequence)$('epgStatus').textContent=`Guía no disponible (${e.message}). Podés importar XMLTV o generarlo con iptv-org/epg.`}
 }
 $('epgUrl').value=readJSON('cristal.epgUrl','');$('loadEpg').onclick=()=>loadGuide(true);
-$('epgFile').onchange=async()=>{const f=$('epgFile').files[0];if(!f)return;if(f.size>40*1024*1024){$('epgStatus').textContent='El XMLTV supera 40 MB';return}epgSequence++;try{await acceptGuide(await f.text(),'Archivo '+f.name)}catch(e){$('epgStatus').textContent=e.message}};
+$('epgFile').onchange=async()=>{const f=$('epgFile').files[0];if(!f)return;if(f.size>40*1024*1024){$('epgStatus').textContent='El XMLTV supera 40 MB';return}epgSequence++;try{await acceptGuide(await readXMLTV(f),'Archivo '+f.name,epgProviders.find(p=>p.url===$('epgUrl').value.trim())?.aliases||{},'file:'+f.name)}catch(e){$('epgStatus').textContent=e.message}};
 setInterval(renderGuide,60000);
 
 refresh();
+
+async function initProviders(){
+ try{const r=await fetch('data/epg-providers.json');if(!r.ok)throw Error('No hay índice de proveedores');epgProviders=await r.json();$('epgProvider').replaceChildren(new Option('URL personalizada o archivo',''));for(const p of epgProviders)$('epgProvider').add(new Option(p.name,p.id));const current=epgProviders.find(p=>p.url===$('epgUrl').value.trim());$('epgProvider').value=current?.id||''}catch{epgProviders=[]}
+}
+$('epgProvider').onchange=()=>{const p=epgProviders.find(p=>p.id===$('epgProvider').value);if(p)$('epgUrl').value=p.url};

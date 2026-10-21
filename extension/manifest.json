@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Cristal Clear Xuper IPTV",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Televisión en español por país y categoría, con guía XMLTV.",
   "action": {
     "default_title": "Abrir Clear Xuper TV"
@@ -10,7 +10,10 @@
     "service_worker": "background.js"
   },
   "host_permissions": [
-    "https://iptv-org.github.io/*"
+    "https://iptv-org.github.io/*",
+    "https://www.tdtchannels.com/*",
+    "https://www.open-epg.com/*",
+    "https://epgshare01.online/*"
   ],
   "icons": {
     "192": "icon-192.png"

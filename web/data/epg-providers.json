@@ -1,0 +1,97 @@
+[
+  {
+    "id": "tdt",
+    "name": "España · TDTChannels (TDT)",
+    "url": "https://www.tdtchannels.com/epg/TV.xml",
+    "aliases": {
+      "La1.TV": "La1.es@SD",
+      "La2.TV": "La2.es@SD",
+      "24Horas.TV": "24Horas.es@SD",
+      "TDP.TV": "Teledeporte.es@SD",
+      "Clan.TV": "Clan.es@SD",
+      "13.TV": "Trece.es@SD",
+      "Telemadrid.TV": "Telemadrid.es@HD",
+      "AragonTV_INT.TV": "AragonTVInternacional.es@SD",
+      "CanalSurA.TV": "CanalSurAndalucia.es@SD"
+    },
+    "checkedAt": "2026-10-21",
+    "observedChannels": 184,
+    "observedProgrammes": 12306,
+    "note": "Los recuentos son de la fuente completa, no cobertura del catálogo español. No se agregan sus canales."
+  },
+  {
+    "id": "argentina2",
+    "name": "Argentina · Open EPG",
+    "url": "https://www.open-epg.com/files/argentina2.xml",
+    "aliases": {
+      "A24.ar": "A24.ar@SD",
+      "AMERICA 2.ar": "AmericaTV.ar@SD",
+      "CANAL 26.ar": "Canal26.ar@SD",
+      "26TV.ar": "Canal26.ar@SD",
+      "EL NUEVE.ar": "ElNueve.ar@SD",
+      "EL TRECE.ar": "ElTrece.ar@SD",
+      "TELEFE.ar": "Telefe.ar@SD",
+      "TN.ar": "TN.ar@SD",
+      "ENCUENTRO.ar": "Encuentro.ar@SD",
+      "PAKA PAKA.ar": "Pakapaka.ar@SD",
+      "DEPORTV.ar": "DeporTV.ar@SD",
+      "ARGENTINISIMA.ar": "ArgentinisimaSatelital.ar@SD"
+    },
+    "checkedAt": "2026-10-21",
+    "observedChannels": 159,
+    "observedProgrammes": 8910,
+    "note": "Los recuentos son de la fuente completa, no cobertura del catálogo español. No se agregan sus canales."
+  },
+  {
+    "id": "spain1",
+    "name": "España · Open EPG",
+    "url": "https://www.open-epg.com/files/spain1.xml",
+    "aliases": {},
+    "checkedAt": "2026-10-21",
+    "observedChannels": 187,
+    "observedProgrammes": 9376,
+    "note": "Los recuentos son de la fuente completa, no cobertura del catálogo español. No se agregan sus canales."
+  },
+  {
+    "id": "mexico1",
+    "name": "México · Open EPG",
+    "url": "https://www.open-epg.com/files/mexico1.xml",
+    "aliases": {
+      "adn40.mx": "ADN40.mx@SD",
+      "Azteca 7.mx": "Azteca7.mx@SD",
+      "Canal 22.mx": "Canal22Nacional.mx@SD",
+      "Canal Once.mx": "CanalOnce.mx@HD",
+      "Az Corazón.mx": "AzCorazon.mx@SD"
+    },
+    "checkedAt": "2026-10-21",
+    "observedChannels": 121,
+    "observedProgrammes": 3968,
+    "note": "Los recuentos son de la fuente completa, no cobertura del catálogo español. No se agregan sus canales."
+  },
+  {
+    "id": "peru1",
+    "name": "Perú · Open EPG",
+    "url": "https://www.open-epg.com/files/peru1.xml",
+    "aliases": {
+      "ATV.pe": "ATV.pe@SD",
+      "ATV +.pe": "ATVPlus.pe@SD",
+      "ATV Sur.pe": "ATVSur.pe@SD",
+      "América Televisión.pe": "AmericaTelevision.pe@SD",
+      "Bethel.pe": "BethelTV.pe@SD"
+    },
+    "checkedAt": "2026-10-21",
+    "observedChannels": 115,
+    "observedProgrammes": 5653,
+    "note": "Los recuentos son de la fuente completa, no cobertura del catálogo español. No se agregan sus canales."
+  },
+  {
+    "id": "epgshare-es",
+    "name": "España · EPGShare (gzip)",
+    "url": "https://epgshare01.online/epgshare01/epg_ripper_ES1.xml.gz",
+    "aliases": {},
+    "checkedAt": "2026-10-21",
+    "observedChannels": 373,
+    "observedProgrammes": 33841,
+    "note": "Los recuentos son de la fuente completa, no cobertura del catálogo español. No se agregan sus canales."
+  }
+]
