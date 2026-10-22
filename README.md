@@ -202,3 +202,7 @@ Hay 31 equivalencias explícitas de IDs. El resto solo se vincula por ID exacto 
 La web y Android WebView pueden bloquear URLs sin CORS. En ese caso descargar el archivo desde el proveedor e importarlo, o servirlo con los encabezados CORS correspondientes. La extensión solicita acceso a los tres dominios específicos de estas guías.
 
 [Revisión de las tres fuentes propuestas y resultados](docs/EPG-SOURCES.md). Free-TV Argentina aporta un catálogo e identificadores, no programación horaria. El addon Flow consulta una API con autenticación y requiere suscripción; no se copiaron su código, recursos de marca ni datos de cuentas. Su licencia de código no equivale a permiso sobre la programación de la plataforma.
+
+## Bienvenida y colaboraciones
+
+Cuadro opcional con aviso breve de derechos de terceros, diseño oscuro y verde menta, y aportes sugeridos desde ARS 500 por Mercado Pago o USD 10 por PayPal. QR centrado, botón **Donar** y botón **Saltar**, en ese orden. Disponible en Android, Windows, Linux y extensiones Chrome/Edge; vuelve a abrirse desde **Colaborar**. [Colaborar en Monedita](https://monedita.ar/cristalcleariptv). [Funcionamiento y validación](docs/WELCOME.md).

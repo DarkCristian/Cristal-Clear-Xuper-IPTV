@@ -1,6 +1,6 @@
 {
   "name": "cristal-clear-xuper-iptv",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "type": "module",
   "description": "Cliente IPTV multiplataforma",
@@ -15,11 +15,13 @@
     "build:windows": "electron-builder --win nsis portable --publish never",
     "build:linux": "electron-builder --linux AppImage --publish never",
     "catalog:update": "python3 scripts/update-catalog.py",
-    "epg:channels": "python3 scripts/epg-channels.py"
+    "epg:channels": "python3 scripts/epg-channels.py",
+    "test:welcome": "node tests/welcome.browser.mjs"
   },
   "devDependencies": {
     "electron": "45.0.0",
-    "electron-builder": "26.15.3"
+    "electron-builder": "26.15.3",
+    "playwright": "1.58.2"
   },
   "build": {
     "appId": "ar.com.cristalclear.iptv",
