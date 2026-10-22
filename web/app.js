@@ -48,6 +48,7 @@ async function play(c){
  const isHls=/\.m3u8(?:[?#]|$)/i.test(c.url);
  const nativeHls=!!v.canPlayType('application/vnd.apple.mpegurl');
  const hlsAvailable=!!window.Hls?.isSupported();
+ if(playbackEngine==='hls'&&!isHls){$('playStatus').textContent='HLS.js requiere una señal HLS (.m3u8). Seleccioná Automático o HTML5 para este canal.';return}
  if(playbackEngine==='html5'||(playbackEngine==='auto'&&(nativeHls||!isHls))){v.src=c.url;await start()}
  else if(hlsAvailable){
   const player=new Hls({maxBufferLength:20,backBufferLength:20,capLevelToPlayerSize:true});hls=player;
@@ -58,7 +59,9 @@ async function play(c){
   $('playStatus').textContent='El motor HLS.js no está disponible en este dispositivo o navegador.';
  }else{v.src=c.url;await start()}
 }
+if(!['auto','hls','html5'].includes(playbackEngine))playbackEngine='auto';
 $('engine').value=playbackEngine;
+if(window.AndroidPlayer)$('engine').closest('label').hidden=true;
 $('engine').onchange=()=>{
  playbackEngine=$('engine').value;save('cristal.playerEngine',playbackEngine);
  if(currentChannel)play(currentChannel);
