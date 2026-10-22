@@ -1,6 +1,6 @@
 import {fileURLToPath} from 'node:url';
 process.chdir(fileURLToPath(new URL('../',import.meta.url)));
-import {cp,mkdir,copyFile} from 'node:fs/promises';
+import {cp,mkdir,writeFile,stat} from 'node:fs/promises';
 // Video.js se distribuye localmente: Manifest V3 no admite scripts CDN.
 // Versión fijada para builds reproducibles (actualizar tras validar compatibilidad).
 await mkdir('web/vendor',{recursive:true});
