@@ -8,6 +8,22 @@ La idea es que sea para el pueblo, de licencia abierta y sin publicidad (a base 
 
 **Versión de distribución v1.0.0 (artifacts del Workflow #13, compilados con versión interna 0.2.2).** Proyecto propio: el ZIP de referencia era una extensión Chromium compilada, sin fuentes de desarrollo ni licencia en la raíz. No se copiaron sus bundles, imágenes o marcas, por lo que este repositorio no se presenta como fork de aplicaciones comerciales.
 
+##
+## DISCLAIMER / AVISO:
+
+Cristal Clear Xuper IPTV es una aplicación independiente de reproducción y visualización de contenido multimedia mediante tecnologías de transmisión por Internet, incluyendo IPTV, HTTP Live Streaming (HLS) y otros protocolos compatibles.
+
+El proyecto se desarrolla y distribuye como una herramienta tecnológica destinada a facilitar la reproducción de fuentes multimedia disponibles a través de Internet.
+
+La aplicación no constituye por sí misma un servicio de televisión, una plataforma de distribución audiovisual ni una empresa proveedora de señales televisivas.
+
+Todos los derechos de autor, derechos conexos, marcas comerciales, logotipos, nombres de canales, producciones cinematográficas, series, programas televisivos, transmisiones deportivas, obras musicales y demás contenidos audiovisuales pertenecen exclusivamente a sus respectivos titulares legítimos.
+
+Cristal Clear Xuper IPTV y su desarrollador no reivindican propiedad, autoría, licencia ni derechos de explotación sobre contenidos multimedia de terceros.
+
+La inclusión o visualización de nombres, logotipos, identificadores, enlaces o metadatos de canales no implica titularidad, patrocinio, autorización, asociación comercial ni vínculo contractual con sus propietarios.
+##
+
 ## Descargas v1.0.0
 
 [Release v1.0.0](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/releases/tag/v1.0.0) · [Workflow #13 (origen de los cuatro artifacts)](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39718101706).
@@ -28,7 +44,7 @@ En web, Chrome/Edge, Windows y Linux se ofrecen HTML5, HLS.js y Video.js (archiv
 - Buscador sin tildes, favoritos locales, paginación, copias de respaldo y actualización de listas.
 - Reproductor HLS, pantalla completa y selector de variantes cuando la señal las ofrece.
 - Guía XMLTV: programa actual y próximo, importación de archivo o URL, vinculación por `tvg-id`, base sin ambigüedad o equivalencia explícita y horas en la zona local. Muestra «Sin Informar» cuando faltan datos.
-- Extensión Chrome/Edge, web/PWA, escritorio Electron Windows/Linux y proyecto Android con reproductor Media3 nativo, launcher móvil y Android TV.
+- Extensión Chrome/Edge, escritorio Electron Windows/Linux y proyecto Android con reproductor Media3 nativo, launcher móvil y Android TV.
 
 La clasificación lingüística depende de los índices públicos, no de un análisis de audio. Una URL puede cambiar de contenido o emitir programas en otro idioma. No se garantiza que toda emisión sea correcta o esté disponible.
 
