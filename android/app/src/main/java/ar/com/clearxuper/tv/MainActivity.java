@@ -3,6 +3,7 @@ package ar.com.clearxuper.tv;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.Configuration;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         web = new WebView(this);
         setContentView(web);
         web.getSettings().setJavaScriptEnabled(true);
@@ -61,14 +63,20 @@ public class MainActivity extends Activity {
         final ExoPlayer openedPlayer = player;
         playerView = new PlayerView(this);
         playerView.setPlayer(player);
+        // Ocultar los controles después de 3 segundos; un toque vuelve a mostrarlos.
+        playerView.setControllerShowTimeoutMs(3000);
+        playerView.setControllerHideOnTouch(true);
+        playerView.setControllerAutoShow(true);
         dialog = new Dialog(this, android.R.style.Theme_Material_NoActionBar_Fullscreen);
         dialog.setContentView(playerView);
         dialog.setOnDismissListener(d -> {
             applyKeepScreenOn(false);
             dialog = null;
             releasePlayer();
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         });
         dialog.show();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         resizePlayerWindow();
         playerView.requestFocus();
         player.addListener(new Player.Listener() {
@@ -122,6 +130,7 @@ public class MainActivity extends Activity {
         dialog = null;
         if (previous != null) { previous.setOnDismissListener(null); previous.dismiss(); }
         releasePlayer();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override public void onConfigurationChanged(Configuration configuration) {

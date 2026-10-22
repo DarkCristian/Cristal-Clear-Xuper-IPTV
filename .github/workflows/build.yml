@@ -2,7 +2,7 @@ name: Build experimental clients
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, feature/unified-catalog-desktop-ux]
 permissions:
   contents: read
 jobs:

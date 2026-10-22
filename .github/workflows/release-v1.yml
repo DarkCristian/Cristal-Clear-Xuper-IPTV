@@ -1,0 +1,60 @@
+name: Publish v1.0 from verified Workflow 13 artifacts
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-v1.yml'
+permissions:
+  contents: write
+  actions: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve Android artifact from Workflow 13
+        uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-android-debug
+          run-id: 39718101706
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/android
+      - name: Retrieve Windows artifact from Workflow 13
+        uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-windows
+          run-id: 39718101706
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/windows
+      - name: Retrieve Linux artifact from Workflow 13
+        uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-linux
+          run-id: 39718101706
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/linux
+      - name: Retrieve Chrome and Edge artifact from Workflow 13
+        uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-extension-chrome
+          run-id: 39718101706
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/extension
+      - name: Package the four artifact groups
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p publish
+          test -n "$(find assets/android -type f -name '*.apk' -print -quit)"
+          test -n "$(find assets/windows -type f -print -quit)"
+          test -n "$(find assets/linux -type f -print -quit)"
+          test -f assets/extension/manifest.json
+          cp "$(find assets/android -type f -name '*.apk' -print -quit)" publish/Cristal-Clear-Xuper-IPTV-v1.0-Android-debug.apk
+          (cd assets/windows && zip -qr ../../publish/Cristal-Clear-Xuper-IPTV-v1.0-Windows.zip .)
+          (cd assets/linux && zip -qr ../../publish/Cristal-Clear-Xuper-IPTV-v1.0-Linux.zip .)
+          (cd assets/extension && zip -qr ../../publish/Cristal-Clear-Xuper-IPTV-v1.0-Chrome-Edge.zip .)
+      - name: Publish release v1.0.0
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v1.0.0 publish/* --target "$GITHUB_SHA" --title "Cristal Clear Xuper IPTV v1.0" --notes "Primera distribución v1.0 basada exactamente en los cuatro artifacts del Workflow #13 (run 39718101706): Android debug, Windows, Linux y extensión Chrome/Edge. IMPORTANTE: los binarios originales muestran versión interna 0.2.2; esta etiqueta de distribución no implica recompilación ni firma. Incluye catálogo español/películas, selector HTML5/HLS.js/Video.js y cambios de interfaz del PR #3. La grilla EPG completa permanece pendiente. Compilación CI exitosa; reproducción real sin certificar."

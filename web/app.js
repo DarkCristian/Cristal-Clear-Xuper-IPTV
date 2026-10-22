@@ -1,9 +1,10 @@
 import {parseXMLTV,nowNext,mergeGuides,readXMLTV} from './epg.js';
-import {SOURCES,parseM3U,mergeChannels,filterChannels,spanishOnly,safeURL,compareCountries} from './core.js';
+import {SOURCES,parseM3U,mergeChannels,filterChannels,unifiedCatalog,safeURL,compareCountries} from './core.js';
 const $=id=>document.getElementById(id);
 let epgProviders=[],guideSources=new Map();
 let metadata={},catalogInfo=null,guide=new Map(),currentChannel=null,epgSequence=0;
-let channels=[],country='all',category='all',onlyFavorites=false,limit=80,hls=null,generation=0;
+let playbackEngine=readJSON('cristal.playerEngine','auto');
+let channels=[],country='all',category='all',onlyFavorites=false,limit=80,hls=null,videojsPlayer=null,generation=0;
 function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 let saved=readJSON('cxtv.favorites',[]);
 const favorites=new Set(Array.isArray(saved)?saved.filter(x=>typeof x==='string'):[]);
@@ -20,8 +21,8 @@ async function loadSource(s){
  catch{return {data:[],label:`${s.name}: no disponible (${failure})`}}
 }
 async function refresh(){
- $('refresh').disabled=true;$('status').textContent='Actualizando catálogo español y exclusión de inglés…';
- try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=spanishOnly(results[0].data,results[1].data,metadata);fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Solo español; inglés y bilingües español/inglés excluidos según índices y metadatos.';render();await initProviders();const savedURL=readJSON('cristal.epgUrl','');await loadGuide(false,true);if(savedURL)loadGuide()}
+ $('refresh').disabled=true;$('status').textContent='Actualizando canales en español y películas…';
+ try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=unifiedCatalog(results[0].data,results[1].data,metadata);fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Catálogo unificado: Argentina, deportes, películas y otros canales.';render();await initProviders();const savedURL=readJSON('cristal.epgUrl','');await loadGuide(false,true);if(savedURL)loadGuide()}
  finally{$('refresh').disabled=false}
 }
 function render(){
@@ -38,25 +39,46 @@ function render(){
  }
  $('more').hidden=list.length<=limit;
 }
-function reset(){generation++;if(hls){hls.destroy();hls=null}$('video').pause();$('video').removeAttribute('src');$('video').load();$('quality').replaceChildren(new Option('Automática','-1'));}
+function reset(){generation++;if(videojsPlayer){videojsPlayer.dispose();videojsPlayer=null}$('video').hidden=false;if(hls){hls.destroy();hls=null}$('video').pause();$('video').removeAttribute('src');$('video').load();$('quality').replaceChildren(new Option('Automática','-1'));}
 async function play(c){
- reset();currentChannel=c;renderGuide();const myGeneration=generation;const v=$('video');$('current').textContent=c.name;$('placeholder').hidden=true;$('placeholder').style.display='none';$('playStatus').textContent='Conectando…';
+ reset();$('playerPanel').hidden=false;currentChannel=c;renderGuide();$('playerPanel').scrollIntoView({behavior:'smooth',block:'start'});const myGeneration=generation;const v=$('video');$('current').textContent=c.name;$('placeholder').hidden=true;$('placeholder').style.display='none';$('playStatus').textContent='Conectando…';
  if(window.AndroidPlayer){window.AndroidPlayer.play(c.url,c.name);$('playStatus').textContent='Abierto en reproductor Android. Volvé con Atrás.';return}
  if(['https:','cxtv:'].includes(location.protocol)&&c.url.startsWith('http:')){$('playStatus').textContent='Esta señal usa HTTP. La web HTTPS puede bloquearla; probá la app Android.';return}
  const start=()=>v.play().catch(()=>{if(myGeneration===generation)$('playStatus').textContent='Usá el botón de reproducción. Si falla, la señal puede estar caída o restringida.'});
- if(v.canPlayType('application/vnd.apple.mpegurl')){v.src=c.url;await start()}
- else if(window.Hls?.isSupported()){
+ const isHls=/\.m3u8(?:[?#]|$)/i.test(c.url);
+ const nativeHls=!!v.canPlayType('application/vnd.apple.mpegurl');
+ const hlsAvailable=!!window.Hls?.isSupported();
+ if(playbackEngine==='videojs'){
+  if(typeof window.videojs!=='function'){$('playStatus').textContent='Video.js no está instalado en este paquete. Recompilá la aplicación.';return}
+  v.hidden=true;const external=document.createElement('video');external.id='videojs-playback';external.className='video-js vjs-default-skin';external.setAttribute('playsinline','');external.style.cssText='width:100%;height:100%;position:absolute;inset:0';v.parentElement.append(external);
+  const p=window.videojs(external,{controls:true,autoplay:false,preload:'auto',fluid:false,html5:{vhs:{overrideNative:true}}});videojsPlayer=p;
+  p.ready(()=>{if(myGeneration!==generation)return;p.src({src:c.url,type:isHls?'application/x-mpegURL':/\.mpd(?:[?#]|$)/i.test(c.url)?'application/dash+xml':'video/mp4'});p.play()?.catch?.(()=>{if(myGeneration===generation)$('playStatus').textContent='Video.js: no se pudo iniciar la señal.'})});
+  p.on('error',()=>{if(myGeneration===generation)$('playStatus').textContent='Video.js: stream incompatible o no disponible.'});return;
+ }
+ if(playbackEngine==='hls'&&!isHls){$('playStatus').textContent='HLS.js requiere una señal HLS (.m3u8). Seleccioná Automático o HTML5 para este canal.';return}
+ if(playbackEngine==='html5'||(playbackEngine==='auto'&&(nativeHls||!isHls))){v.src=c.url;await start()}
+ else if(hlsAvailable){
   const player=new Hls({maxBufferLength:20,backBufferLength:20,capLevelToPlayerSize:true});hls=player;
   player.on(Hls.Events.MANIFEST_PARSED,()=>{if(myGeneration!==generation)return;for(const [i,l] of player.levels.entries())$('quality').add(new Option(`${l.height||'?'}p · ${Math.round(l.bitrate/1000)} kb/s`,String(i)));start()});
   player.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal&&myGeneration===generation){$('playStatus').textContent='No se pudo reproducir: señal caída, CORS, restricción regional o códec incompatible.';player.destroy();if(hls===player)hls=null}});
   player.loadSource(c.url);player.attachMedia(v);
+ }else if(playbackEngine==='hls'||(isHls&&!nativeHls)){
+  $('playStatus').textContent='El motor HLS.js no está disponible en este dispositivo o navegador.';
  }else{v.src=c.url;await start()}
 }
+if(!['auto','hls','html5','videojs'].includes(playbackEngine))playbackEngine='auto';
+$('engine').value=playbackEngine;
+if(window.AndroidPlayer)$('engine').closest('label').hidden=true;
+$('engine').onchange=()=>{
+ playbackEngine=$('engine').value;save('cristal.playerEngine',playbackEngine);
+ if(currentChannel)play(currentChannel);
+};
 $('video').addEventListener('playing',()=>{$('playStatus').textContent='En vivo'});
 $('video').addEventListener('error',()=>{$('playStatus').textContent='Error de reproducción: verificá disponibilidad y compatibilidad de la señal.'});
 $('quality').onchange=()=>{if(hls)hls.currentLevel=Number($('quality').value)};
+$('closePlayer').onclick=()=>{reset();window.AndroidPlayer?.stop();currentChannel=null;$('playerPanel').hidden=true;renderGuide();document.querySelector('.catalog').scrollIntoView({behavior:'smooth',block:'start'})};
 $('stop').onclick=()=>{reset();window.AndroidPlayer?.stop();$('playStatus').textContent='Reproducción detenida';$('placeholder').style.display='grid'};
-$('fullscreen').onclick=()=>{$('video').requestFullscreen?.().catch(()=>{$('playStatus').textContent='Pantalla completa no disponible'})};
+$('fullscreen').onclick=()=>{(videojsPlayer?.el()||$('video')).requestFullscreen?.().catch(()=>{$('playStatus').textContent='Pantalla completa no disponible'})};
 $('refresh').onclick=refresh;$('query').oninput=()=>{limit=80;render()};$('more').onclick=()=>{limit+=80;render()};
 $('country').onchange=()=>{country=$('country').value;limit=80;render()};$('category').onchange=()=>{category=$('category').value;limit=80;render()};
 $('favorites').onclick=()=>{onlyFavorites=!onlyFavorites;$('favorites').setAttribute('aria-pressed',String(onlyFavorites));render()};
@@ -100,6 +122,9 @@ $('epgUrl').value=readJSON('cristal.epgUrl','');$('loadEpg').onclick=()=>loadGui
 $('epgFile').onchange=async()=>{const f=$('epgFile').files[0];if(!f)return;if(f.size>40*1024*1024){$('epgStatus').textContent='El XMLTV supera 40 MB';return}epgSequence++;try{await acceptGuide(await readXMLTV(f),'Archivo '+f.name,epgProviders.find(p=>p.url===$('epgUrl').value.trim())?.aliases||{},'file:'+f.name)}catch(e){$('epgStatus').textContent=e.message}};
 setInterval(renderGuide,60000);
 
+const backTop=$('backTop');
+window.addEventListener('scroll',()=>{backTop.hidden=window.scrollY<350},{passive:true});
+backTop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 refresh();
 
 async function initProviders(){
