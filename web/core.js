@@ -1,4 +1,4 @@
-export const SOURCES=[{id:'spa',name:'Español',url:'https://iptv-org.github.io/iptv/languages/spa.m3u'},{id:'eng',name:'Exclusión de inglés',url:'https://iptv-org.github.io/iptv/languages/eng.m3u'}];
+export const SOURCES=[{id:'spa',name:'Español',url:'https://iptv-org.github.io/iptv/languages/spa.m3u'},{id:'movies',name:'Películas',url:'https://iptv-org.github.io/iptv/categories/movies.m3u'}];
 export function safeURL(value) {
  try { const u=new URL(value); return ['http:','https:'].includes(u.protocol)&&!u.username&&!u.password?u.href:null; } catch { return null; }
 }
@@ -56,4 +56,17 @@ export function orderChannels(channels){
   else {const country=compareCountries(a.country,b.country);if(country)return country;}
   return channelCollator.compare(a.name||'',b.name||'')||channelCollator.compare(a.tvgId||'',b.tvgId||'')||channelCollator.compare(a.id||'',b.id||'');
  });
+}
+
+// Catálogo unificado: español y películas; deduplicación por URL y prioridad editorial.
+export function unifiedCatalog(spanish,movies,metadata={}){
+ const movieUrls=new Set(movies.map(c=>c.url));
+ const all=mergeChannels([spanish,movies]).map(c=>{
+  const m=metadata[c.tvgId]||metadata[c.tvgId.split('@')[0]]||{};
+  const categories=new Set(m.categories?.length?m.categories:c.group.split(';').map(x=>x.trim().toLowerCase()).filter(Boolean));
+  if(movieUrls.has(c.url))categories.add('movies');
+  return {...c,country:m.country||'ZZ',categories:[...categories]};
+ });
+ const rank=c=>c.country==='AR'?0:c.categories.includes('sports')?1:c.categories.includes('movies')?2:3;
+ return all.sort((a,b)=>rank(a)-rank(b)||compareCountries(a.country,b.country)||channelCollator.compare(a.name,b.name));
 }
