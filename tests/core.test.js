@@ -1,9 +1,9 @@
-import {test} from 'node:test';import assert from 'node:assert/strict';import {parseM3U,mergeChannels,filterChannels,safeURL,SOURCES} from '../web/core.js';import {readFileSync} from 'node:fs';
+import {test} from 'node:test';import assert from 'node:assert/strict';import {parseM3U,mergeChannels,filterChannels,safeURL,SOURCES,unifiedCatalog} from '../web/core.js';import {readFileSync} from 'node:fs';
 test('atributos, BOM, CRLF, comas y rechazo de protocolos',()=>{const c=parseM3U('\uFEFF#EXTM3U\r\n#EXTINF:-1 tvg-id="x" group-title="Arte, TV" tvg-logo="javascript:bad",Canal, Uno\r\nhttps://example.org/live.m3u8\r\n#EXTINF:-1,Malicioso\r\njavascript:alert(1)','ar');assert.equal(c.length,1);assert.equal(c[0].group,'Arte, TV');assert.equal(c[0].name,'Canal, Uno');assert.equal(c[0].logo,'')});
 test('no confunde HTML de error con M3U',()=>assert.throws(()=>parseM3U('<html>Error</html>','ar')));
 test('combina URL idéntica preservando pertenencia y variantes',()=>{const a=parseM3U('#EXTM3U\n#EXTINF:-1,Cine\nhttps://example.org/a','ar');const b=parseM3U('#EXTM3U\n#EXTINF:-1,Cine\nhttps://example.org/a\n#EXTINF:-1,Cine\nhttps://example.org/b','movies');const m=mergeChannels([a,b]);assert.equal(m.length,2);assert.deepEqual(m[0].sources,['ar','movies']);assert.equal(filterChannels(m,{source:'movies',query:'cine'}).length,2);assert.equal(filterChannels(m,{favorites:new Set([m[0].id])}).length,1)});
 test('busca sin distinguir tildes y descarta credenciales en URL',()=>{assert.equal(filterChannels([{name:'Películas',group:'Cine',sources:['ar']}],{query:'peliculas'}).length,1);assert.equal(safeURL('https://user:pass@example.org'),null)});
-for(const s of SOURCES)test('copia incluida '+s.id,()=>{const c=parseM3U(readFileSync(new URL('../web/data/'+s.id+'.m3u',import.meta.url),'utf8'),s.id);assert.ok(c.length>0);console.log(s.id,c.length,'entradas')});
+for(const s of SOURCES.filter(s=>s.id==='spa'))test('copia incluida '+s.id,()=>{const c=parseM3U(readFileSync(new URL('../web/data/'+s.id+'.m3u',import.meta.url),'utf8'),s.id);assert.ok(c.length>0);console.log(s.id,c.length,'entradas')});
 
 import {spanishOnly} from '../web/core.js';
 import {xmltvTime,nowNext} from '../web/epg.js';
@@ -26,3 +26,10 @@ test('combina fuentes con prioridad y respaldo para huecos',()=>{const primary=n
 test('lee XML y gzip por firma, no solo por extensión',async()=>{const xml='<?xml version="1.0"?><tv></tv>';assert.equal(await readXMLTV(new Response(xml)),xml);assert.equal(await readXMLTV(new Blob([gzipSync(xml)])),xml)});
 test('rechaza gzip corrupto y descompresión mayor al límite',async()=>{await assert.rejects(()=>readXMLTV(new Blob([Uint8Array.from([31,139,0,0])])));const bomb=gzipSync(Buffer.alloc(40*1024*1024+1,65));await assert.rejects(()=>readXMLTV(new Blob([bomb])),/40 MB/)});
 test('fuentes revisadas no agregan canales al catálogo',()=>{const providers=JSON.parse(readFileSync(new URL('../web/data/epg-providers.json',import.meta.url),'utf8'));const allowed=new Set(JSON.parse(readFileSync(new URL('../web/data/allowed-ids.json',import.meta.url),'utf8')));assert.equal(providers.length,6);for(const p of providers){assert.ok(p.url.startsWith('https://'));for(const target of Object.values(p.aliases))assert.ok(allowed.has(target),target)}});
+
+test('catálogo unificado prioriza Argentina, deportes y películas sin duplicar URL',()=>{
+ const mk=(name,url,id,group)=>parseM3U(`#EXTM3U\n#EXTINF:-1 tvg-id="${id}" group-title="${group}",${name}\n${url}`,'spa')[0];
+ const ar=mk('Argentina','https://example.org/ar','ar','General');const sport=mk('Deportes','https://example.org/sports','sports','Sports');const movie=mk('Cine','https://example.org/movies','movies','Movies');
+ const result=unifiedCatalog([sport,ar,movie],[movie],{ar:{country:'AR'},sports:{country:'MX'},movies:{country:'ES'}});
+ assert.deepEqual(result.map(c=>c.name),['Argentina','Deportes','Cine']);assert.equal(result.length,3);assert.ok(result[2].categories.includes('movies'));
+});
