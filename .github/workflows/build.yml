@@ -1,8 +1,13 @@
 name: Build experimental clients
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
   push:
-    branches: [main, feature/unified-catalog-desktop-ux]
+    branches: [main, feature/unified-catalog-desktop-ux, feature/welcome-donations-all-platforms]
+concurrency:
+  group: clients-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -43,11 +48,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: npm test
       - run: node scripts/prepare.mjs
       - run: node scripts/check-extension.mjs
+      - run: npm ci --ignore-scripts
+      - name: Verify welcome on desktop and mobile viewports
+        run: npm run test:welcome
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cristal-clear-welcome-screenshots
+          path: build/welcome-checks/
+          if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         with:
           name: cristal-clear-extension-chrome
+          path: build/extension/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cristal-clear-extension-edge
           path: build/extension/
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
@@ -74,6 +94,7 @@ jobs:
         with:
           gradle-version: '8.11.1'
       - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - run: npm test
       - run: node scripts/prepare.mjs
       - run: gradle -p android assembleDebug
       - uses: actions/upload-artifact@v4
