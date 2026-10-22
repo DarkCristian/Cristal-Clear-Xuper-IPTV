@@ -42,13 +42,6 @@ La web se entrega por separado como **`cristal-clear-web`**. Los artifacts antig
 
 Para desarrollar desde el código fuente: `node scripts/prepare.mjs` genera `build/extension/`. `node scripts/check-extension.mjs` comprueba el manifiesto y sus archivos antes de publicar. Es una extensión de navegador, no un addon Kodi.
 
-## Web / PWA
-
-```sh
-python -m http.server 8080 --bind 127.0.0.1 --directory web
-```
-
-Abrir http://localhost:8080. Para instalar como PWA o servirla a otros equipos, usar hosting estático HTTPS. No abrir index.html con doble clic. La caché conserva la interfaz y las listas; el video requiere Internet. No se publica un sitio automáticamente.
 
 ## Windows y Linux
 
