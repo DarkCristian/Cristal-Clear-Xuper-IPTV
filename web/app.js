@@ -1,5 +1,5 @@
 import {parseXMLTV,nowNext,mergeGuides,readXMLTV} from './epg.js';
-import {SOURCES,parseM3U,mergeChannels,filterChannels,spanishOnly,safeURL,compareCountries} from './core.js';
+import {SOURCES,parseM3U,mergeChannels,filterChannels,unifiedCatalog,safeURL,compareCountries} from './core.js';
 const $=id=>document.getElementById(id);
 let epgProviders=[],guideSources=new Map();
 let metadata={},catalogInfo=null,guide=new Map(),currentChannel=null,epgSequence=0;
@@ -20,8 +20,8 @@ async function loadSource(s){
  catch{return {data:[],label:`${s.name}: no disponible (${failure})`}}
 }
 async function refresh(){
- $('refresh').disabled=true;$('status').textContent='Actualizando catálogo español y exclusión de inglés…';
- try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=spanishOnly(results[0].data,results[1].data,metadata);fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Solo español; inglés y bilingües español/inglés excluidos según índices y metadatos.';render();await initProviders();const savedURL=readJSON('cristal.epgUrl','');await loadGuide(false,true);if(savedURL)loadGuide()}
+ $('refresh').disabled=true;$('status').textContent='Actualizando canales en español y películas…';
+ try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=unifiedCatalog(results[0].data,results[1].data,metadata);fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Catálogo unificado: Argentina, deportes, películas y otros canales.';render();await initProviders();const savedURL=readJSON('cristal.epgUrl','');await loadGuide(false,true);if(savedURL)loadGuide()}
  finally{$('refresh').disabled=false}
 }
 function render(){
