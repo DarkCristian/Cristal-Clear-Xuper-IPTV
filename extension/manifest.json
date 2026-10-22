@@ -17,8 +17,5 @@
   ],
   "icons": {
     "192": "icon-192.png"
-  },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'none'; worker-src 'self' blob:"
   }
 }
