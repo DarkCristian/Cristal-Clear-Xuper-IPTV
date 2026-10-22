@@ -4,16 +4,24 @@
 
 Alternativa independiente de código abierto inspirada en aplicaciones populares de streaming, con listas IPTV públicas en español y guía XMLTV. No aloja ni controla las emisiones de terceros. El contenido se reproduce desde sus proveedores y está sujeto a sus derechos y condiciones.
 
-**Versión experimental 0.2.1.** Proyecto propio: el ZIP de referencia era una extensión Chromium compilada, sin fuentes de desarrollo ni licencia en la raíz. No se copiaron sus bundles, imágenes o marcas, por lo que este repositorio no se presenta como fork de aplicaciones comerciales.
+**Versión de distribución v1.0.0 (artifacts del Workflow #13, compilados con versión interna 0.2.2).** Proyecto propio: el ZIP de referencia era una extensión Chromium compilada, sin fuentes de desarrollo ni licencia en la raíz. No se copiaron sus bundles, imágenes o marcas, por lo que este repositorio no se presenta como fork de aplicaciones comerciales.
 
-## Descargas experimentales
+## Descargas v1.0.0
 
-[Compilaciones verificadas de la versión 0.2.1](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39679556584). En Artifacts: `cristal-clear-windows` (instalador y portable), `cristal-clear-linux` (AppImage), `cristal-clear-android-debug` (APK) y los paquetes de navegador indicados abajo. Se necesita iniciar sesión en GitHub para descargar artifacts. No es una release estable ni una certificación de reproducción de todas las señales.
+[Release v1.0.0](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/releases/tag/v1.0.0) · [Workflow #13 (origen de los cuatro artifacts)](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39718101706).
+
+Los cuatro paquetes de la release corresponden exactamente a los artifacts de la ejecución #13: Windows (instalador y portable), Linux (AppImage), Android (APK debug) y extensión Chrome/Edge (ZIP). **Los binarios de #13 aún informan versión interna 0.2.2**; v1.0.0 es la etiqueta de distribución. No son binarios recompilados con numeración interna 1.0 ni están firmados. El workflow completó exitosamente; la compatibilidad con cada stream y dispositivo requiere pruebas manuales.
+
+## Interfaz y motores
+
+El catálogo combinado usa `spa.m3u` y `movies.m3u`, deduplica URLs y prioriza Argentina, deportes y películas. La interfaz oculta el reproductor hasta elegir una señal, permite volver al catálogo, dispone de botón flotante para regresar arriba y oculta las opciones manuales de XMLTV. La guía incluida es parcial; **la grilla EPG unificada completa sigue pendiente**.
+
+En web, Chrome/Edge, Windows y Linux se ofrecen HTML5, HLS.js y Video.js (archivos locales). En Android se utiliza Media3 nativo. La disponibilidad real depende de CORS, códecs y de cada origen. La selección de Video.js no garantiza compatibilidad con DASH u otros formatos.
 
 ## Funciones
 
 - Catálogo completo de la lista oficial por idioma español de iptv-org, con filtros combinables por país de origen y categoría.
-- Excluye URLs e IDs presentes en la lista inglesa y feeds declarados en inglés o bilingües español/inglés. No se infiere idioma por país ni por nombre.
+- Combina la lista de idioma español con la categoría pública de películas; elimina URLs duplicadas.
 - Incluye canales hispanohablantes de España, Latinoamérica y otros países. Portugués y otros idiomas quedan fuera. País de origen no significa disponibilidad territorial.
 - Buscador sin tildes, favoritos locales, paginación, copias de respaldo y actualización de listas.
 - Reproductor HLS, pantalla completa y selector de variantes cuando la señal las ofrece.
@@ -99,12 +107,12 @@ No se descarga programación para IDs ajenos al catálogo español. No hay búsq
 
 - [Listas de iptv-org](https://github.com/iptv-org/iptv/blob/master/PLAYLISTS.md).
 - Lista de inclusión: https://iptv-org.github.io/iptv/languages/spa.m3u
-- Exclusión de inglés: https://iptv-org.github.io/iptv/languages/eng.m3u
+- Películas: https://iptv-org.github.io/iptv/categories/movies.m3u
 - País/categoría e idioma de feed: [API oficial](https://github.com/iptv-org/api).
 
 La lista de idioma reúne las señales españolas que también aparecen en listas por país y categoría; no se cargan cientos de listas redundantes ni se incorpora una categoría internacional entera con sus canales ingleses. `web/data/catalog-report.json` contiene los recuentos fechados. La fuente «Películas» corresponde a televisión en vivo, no VOD.
 
-Al abrir o actualizar, el cliente descarga español e inglés. Si fallan, usa caché y después las copias incluidas, informándolo en pantalla. Los metadatos se distribuyen con cada compilación. Para refrescar listas y metadatos de la fuente de código:
+Al abrir o actualizar, el cliente descarga español y películas. Si fallan, usa caché y después las copias incluidas, informándolo en pantalla. Los metadatos se distribuyen con cada compilación. Para refrescar listas y metadatos de la fuente de código:
 
 ```sh
 npm run catalog:update
