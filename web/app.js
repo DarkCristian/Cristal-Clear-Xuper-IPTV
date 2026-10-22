@@ -4,7 +4,7 @@ const $=id=>document.getElementById(id);
 let epgProviders=[],guideSources=new Map();
 let metadata={},catalogInfo=null,guide=new Map(),currentChannel=null,epgSequence=0;
 let playbackEngine=readJSON('cristal.playerEngine','auto');
-let channels=[],country='all',category='all',onlyFavorites=false,limit=80,hls=null,generation=0;
+let channels=[],country='all',category='all',onlyFavorites=false,limit=80,hls=null,videojsPlayer=null,generation=0;
 function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 let saved=readJSON('cxtv.favorites',[]);
 const favorites=new Set(Array.isArray(saved)?saved.filter(x=>typeof x==='string'):[]);
@@ -39,7 +39,7 @@ function render(){
  }
  $('more').hidden=list.length<=limit;
 }
-function reset(){generation++;if(hls){hls.destroy();hls=null}$('video').pause();$('video').removeAttribute('src');$('video').load();$('quality').replaceChildren(new Option('Automática','-1'));}
+function reset(){generation++;if(videojsPlayer){videojsPlayer.pause();videojsPlayer.src({src:'',type:'video/mp4'});videojsPlayer=null}$('video').classList.remove('video-js','vjs-default-skin');$('video').controls=true;if(hls){hls.destroy();hls=null}$('video').pause();$('video').removeAttribute('src');$('video').load();$('quality').replaceChildren(new Option('Automática','-1'));}
 async function play(c){
  reset();currentChannel=c;renderGuide();const myGeneration=generation;const v=$('video');$('current').textContent=c.name;$('placeholder').hidden=true;$('placeholder').style.display='none';$('playStatus').textContent='Conectando…';
  if(window.AndroidPlayer){window.AndroidPlayer.play(c.url,c.name);$('playStatus').textContent='Abierto en reproductor Android. Volvé con Atrás.';return}
@@ -48,6 +48,13 @@ async function play(c){
  const isHls=/\.m3u8(?:[?#]|$)/i.test(c.url);
  const nativeHls=!!v.canPlayType('application/vnd.apple.mpegurl');
  const hlsAvailable=!!window.Hls?.isSupported();
+ if(playbackEngine==='videojs'){
+  if(typeof window.videojs!=='function'){$('playStatus').textContent='Video.js no está instalado en este paquete. Recompilá la aplicación.';return}
+  v.controls=false;v.classList.add('video-js','vjs-default-skin');
+  const p=window.videojs(v,{controls:true,autoplay:false,preload:'auto',fluid:false,html5:{vhs:{overrideNative:true}}});videojsPlayer=p;
+  p.ready(()=>{if(myGeneration!==generation)return;p.src({src:c.url,type:isHls?'application/x-mpegURL':/\.mpd(?:[?#]|$)/i.test(c.url)?'application/dash+xml':'video/mp4'});p.play()?.catch?.(()=>{if(myGeneration===generation)$('playStatus').textContent='Video.js: no se pudo iniciar la señal.'})});
+  p.on('error',()=>{if(myGeneration===generation)$('playStatus').textContent='Video.js: stream incompatible o no disponible.'});return;
+ }
  if(playbackEngine==='hls'&&!isHls){$('playStatus').textContent='HLS.js requiere una señal HLS (.m3u8). Seleccioná Automático o HTML5 para este canal.';return}
  if(playbackEngine==='html5'||(playbackEngine==='auto'&&(nativeHls||!isHls))){v.src=c.url;await start()}
  else if(hlsAvailable){
@@ -59,7 +66,7 @@ async function play(c){
   $('playStatus').textContent='El motor HLS.js no está disponible en este dispositivo o navegador.';
  }else{v.src=c.url;await start()}
 }
-if(!['auto','hls','html5'].includes(playbackEngine))playbackEngine='auto';
+if(!['auto','hls','html5','videojs'].includes(playbackEngine))playbackEngine='auto';
 $('engine').value=playbackEngine;
 if(window.AndroidPlayer)$('engine').closest('label').hidden=true;
 $('engine').onchange=()=>{
