@@ -3,6 +3,7 @@ import {SOURCES,parseM3U,mergeChannels,filterChannels,unifiedCatalog,safeURL,com
 const $=id=>document.getElementById(id);
 let epgProviders=[],guideSources=new Map();
 let metadata={},catalogInfo=null,guide=new Map(),currentChannel=null,epgSequence=0;
+let playbackEngine=readJSON('cristal.playerEngine','auto');
 let channels=[],country='all',category='all',onlyFavorites=false,limit=80,hls=null,generation=0;
 function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 let saved=readJSON('cxtv.favorites',[]);
@@ -44,14 +45,24 @@ async function play(c){
  if(window.AndroidPlayer){window.AndroidPlayer.play(c.url,c.name);$('playStatus').textContent='Abierto en reproductor Android. Volvé con Atrás.';return}
  if(['https:','cxtv:'].includes(location.protocol)&&c.url.startsWith('http:')){$('playStatus').textContent='Esta señal usa HTTP. La web HTTPS puede bloquearla; probá la app Android.';return}
  const start=()=>v.play().catch(()=>{if(myGeneration===generation)$('playStatus').textContent='Usá el botón de reproducción. Si falla, la señal puede estar caída o restringida.'});
- if(v.canPlayType('application/vnd.apple.mpegurl')){v.src=c.url;await start()}
- else if(window.Hls?.isSupported()){
+ const isHls=/\.m3u8(?:[?#]|$)/i.test(c.url);
+ const nativeHls=!!v.canPlayType('application/vnd.apple.mpegurl');
+ const hlsAvailable=!!window.Hls?.isSupported();
+ if(playbackEngine==='html5'||(playbackEngine==='auto'&&(nativeHls||!isHls))){v.src=c.url;await start()}
+ else if(hlsAvailable){
   const player=new Hls({maxBufferLength:20,backBufferLength:20,capLevelToPlayerSize:true});hls=player;
   player.on(Hls.Events.MANIFEST_PARSED,()=>{if(myGeneration!==generation)return;for(const [i,l] of player.levels.entries())$('quality').add(new Option(`${l.height||'?'}p · ${Math.round(l.bitrate/1000)} kb/s`,String(i)));start()});
   player.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal&&myGeneration===generation){$('playStatus').textContent='No se pudo reproducir: señal caída, CORS, restricción regional o códec incompatible.';player.destroy();if(hls===player)hls=null}});
   player.loadSource(c.url);player.attachMedia(v);
+ }else if(playbackEngine==='hls'||(isHls&&!nativeHls)){
+  $('playStatus').textContent='El motor HLS.js no está disponible en este dispositivo o navegador.';
  }else{v.src=c.url;await start()}
 }
+$('engine').value=playbackEngine;
+$('engine').onchange=()=>{
+ playbackEngine=$('engine').value;save('cristal.playerEngine',playbackEngine);
+ if(currentChannel)play(currentChannel);
+};
 $('video').addEventListener('playing',()=>{$('playStatus').textContent='En vivo'});
 $('video').addEventListener('error',()=>{$('playStatus').textContent='Error de reproducción: verificá disponibilidad y compatibilidad de la señal.'});
 $('quality').onchange=()=>{if(hls)hls.currentLevel=Number($('quality').value)};
