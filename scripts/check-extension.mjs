@@ -8,6 +8,8 @@ async function requireFile(path){
 }
 const manifest=JSON.parse(await readFile(resolve(root,'manifest.json'),'utf8'));
 if(manifest.manifest_version!==3)throw Error('Se requiere Manifest V3');
+const csp=manifest.content_security_policy?.extension_pages||'';
+if(/(?:^|;)\s*(?:script-src|worker-src)\s+[^;]*\b(?:blob:|data:|https?:)/i.test(csp))throw Error('CSP incompatible con Manifest V3: no se permiten blob:, data: ni scripts remotos en extension_pages');
 await requireFile(manifest.background.service_worker);
 for(const icon of Object.values(manifest.icons||{}))await requireFile(icon);
 for(const file of ['index.html','app.js','core.js','epg.js','style.css','vendor/hls.min.js','data/metadata.json','data/spa.m3u','data/eng.m3u','data/epg-providers.json','INSTALAR-CHROME.txt'])await requireFile(file);
