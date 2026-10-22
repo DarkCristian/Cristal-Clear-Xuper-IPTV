@@ -4,7 +4,7 @@
 
 Alternativa independiente de código abierto inspirada en aplicaciones populares de streaming, con listas IPTV públicas en español y guía XMLTV. No aloja ni controla las emisiones de terceros. El contenido se reproduce desde sus proveedores y está sujeto a sus derechos y condiciones.
 
-La idea es que sea popular, de licencia abierta, sin publicidad (a base de donativos si te copas por el tiempo dedicado y el esfuerzo para que puedas disfrutarlo, pero tampoco es obligatorio 😉 ).
+La idea es que sea para el pueblo, de licencia abierta y sin publicidad (a base de donativos si te copas por el tiempo dedicado y el esfuerzo para que puedas disfrutarlo, pero tampoco es obligatorio 😉 ).
 
 **Versión de distribución v1.0.0 (artifacts del Workflow #13, compilados con versión interna 0.2.2).** Proyecto propio: el ZIP de referencia era una extensión Chromium compilada, sin fuentes de desarrollo ni licencia en la raíz. No se copiaron sus bundles, imágenes o marcas, por lo que este repositorio no se presenta como fork de aplicaciones comerciales.
 
