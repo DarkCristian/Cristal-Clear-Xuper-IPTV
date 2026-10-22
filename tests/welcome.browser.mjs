@@ -23,7 +23,7 @@ try {
   const page=await context.newPage();
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto(base);await page.waitForSelector('#welcome[open]');
-  assert.equal(await page.locator('#skipWelcome').evaluate(e=>e===document.activeElement),true,'Saltar recibe el foco');
+  assert.equal(await page.locator('#welcomeTitle').evaluate(e=>e===document.activeElement),true,'El foco inicial conserva el mensaje visible');
   const geometry=await page.evaluate(()=>{
    const r=id=>document.querySelector(id).getBoundingClientRect();
    const qr=r('.donation-qr'),donate=r('#donate'),skip=r('#skipWelcome');

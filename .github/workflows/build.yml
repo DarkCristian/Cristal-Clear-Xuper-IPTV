@@ -4,9 +4,9 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main, feature/unified-catalog-desktop-ux, feature/welcome-donations-all-platforms]
+    branches: [main, feature/unified-catalog-desktop-ux]
 concurrency:
-  group: clients-${{ github.event.pull_request.number || github.ref }}
+  group: clients-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 permissions:
   contents: read

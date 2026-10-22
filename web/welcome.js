@@ -8,6 +8,8 @@ function openWelcome() {
  if (dialog.open) return;
  previousFocus = document.activeElement;
  dialog.showModal();
+ dialog.scrollTop = 0;
+ document.getElementById('welcomeTitle').focus({preventScroll:true});
  document.documentElement.classList.add('welcome-open');
 }
 function closeWelcome() { dialog.close(); }
