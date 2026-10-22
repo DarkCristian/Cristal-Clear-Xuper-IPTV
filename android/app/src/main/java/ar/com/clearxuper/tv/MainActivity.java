@@ -61,6 +61,10 @@ public class MainActivity extends Activity {
         final ExoPlayer openedPlayer = player;
         playerView = new PlayerView(this);
         playerView.setPlayer(player);
+        // Ocultar los controles después de 3 segundos; un toque vuelve a mostrarlos.
+        playerView.setControllerShowTimeoutMs(3000);
+        playerView.setControllerHideOnTouch(true);
+        playerView.setControllerAutoShow(true);
         dialog = new Dialog(this, android.R.style.Theme_Material_NoActionBar_Fullscreen);
         dialog.setContentView(playerView);
         dialog.setOnDismissListener(d -> {
