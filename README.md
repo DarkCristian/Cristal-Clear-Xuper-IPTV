@@ -23,6 +23,53 @@ Cristal Clear Xuper IPTV y su desarrollador no reivindican propiedad, autoría, 
 
 La inclusión o visualización de nombres, logotipos, identificadores, enlaces o metadatos de canales no implica titularidad, patrocinio, autorización, asociación comercial ni vínculo contractual con sus propietarios.
 ##
+## Privacidad y permisos — Android
+
+Cristal Clear Xuper IPTV para Android está diseñada para funcionar sin solicitar permisos invasivos o ajenos a su finalidad.
+
+La aplicación no requiere acceso a la cámara, ubicación, contactos, llamadas telefónicas ni mensajes SMS, y no solicita permisos para enviar mensajes o realizar llamadas.
+
+Únicamente utiliza las capacidades necesarias para conectarse a Internet y reproducir contenido multimedia.
+
+Respetamos la privacidad del usuario: la aplicación no necesita acceder a información personal sensible del dispositivo para funcionar.
+
+
+## Privacidad y permisos — Extensión Chrome / Microsoft Edge
+
+Cristal Clear Xuper IPTV para Google Chrome y Microsoft Edge está diseñada para respetar la privacidad del usuario y funcionar sin solicitar permisos invasivos o innecesarios.
+
+La extensión no requiere acceso a archivos personales, dirección MAC, ubicación geográfica, historial de navegación, información detallada del sistema operativo, características del hardware ni recursos del equipo ajenos a su funcionamiento.
+
+Tampoco está diseñada para recopilar identificadores del dispositivo, elaborar perfiles de usuario ni realizar seguimiento de su actividad.
+
+Los permisos de red se utilizan exclusivamente para consultar listas IPTV, obtener información de programación (EPG) y reproducir contenido multimedia desde servidores externos.
+
+Compromiso de privacidad: Cristal Clear Xuper IPTV no necesita recopilar datos personales ni monitorear la actividad del usuario para ofrecer sus funcionalidades.
+
+Nota: los servidores externos pueden recibir información técnica habitual de las conexiones, como la dirección IP pública y datos del navegador. Estas comunicaciones están sujetas a las políticas de los respectivos proveedores de contenido.
+
+### Privacidad, permisos y seguridad — Windows (Portable e Instalable)
+
+**Cristal Clear Xuper IPTV para Windows**, tanto en su versión **Portable** como **Instalable**, está diseñado para funcionar sin requerir permisos invasivos ni acceder a información personal ajena a sus funcionalidades.
+
+La aplicación no necesita acceder a **archivos personales, dirección MAC, ubicación geográfica, historial de navegación, información detallada del sistema operativo ni identificadores únicos del equipo**.
+
+Tampoco está diseñada para recopilar direcciones IP con fines de seguimiento, realizar análisis de comportamiento, elaborar perfiles de usuario ni monitorear la actividad del dispositivo.
+
+La conexión a Internet se utiliza para actualizar listas IPTV, consultar guías de programación (EPG) y reproducir contenido multimedia desde servidores externos. Estos servidores pueden recibir información técnica habitual de las conexiones, como la dirección IP pública.
+
+**Compromiso de privacidad:** Cristal Clear Xuper IPTV no requiere recopilar información personal sensible ni supervisar la actividad del usuario para funcionar.
+
+### Seguridad — VirusTotal
+
+Para facilitar la transparencia y permitir la verificación independiente de los ejecutables distribuidos, se proporcionan los siguientes análisis de seguridad:
+
+- **Windows Portable:** [Consultar análisis en VirusTotal](https://www.virustotal.com/gui/file/81d99134294f1daef63889fa3e45a6ead880bd6a126693da2c849a5906baf1ab?nocache=1)
+- **Windows Instalable:** [Consultar análisis en VirusTotal](https://www.virustotal.com/gui/file/d94f982b13ab820cfce7967a5584569387b362d0849df3bb501333c1ba009b4e?nocache=1)
+
+Los análisis corresponden a los archivos identificados por sus respectivos hashes SHA-256. Cualquier modificación o nueva compilación genera un archivo diferente que requiere una nueva verificación.
+
+**Importante:** VirusTotal es una herramienta de análisis mediante múltiples motores de seguridad. Sus resultados no constituyen una certificación de seguridad absoluta ni garantizan la ausencia de vulnerabilidades.
 
 ## Descargas v1.0.0
 
