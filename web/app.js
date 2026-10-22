@@ -39,7 +39,7 @@ function render(){
  }
  $('more').hidden=list.length<=limit;
 }
-function reset(){generation++;if(videojsPlayer){videojsPlayer.pause();videojsPlayer.src({src:'',type:'video/mp4'});videojsPlayer=null}$('video').classList.remove('video-js','vjs-default-skin');$('video').controls=true;if(hls){hls.destroy();hls=null}$('video').pause();$('video').removeAttribute('src');$('video').load();$('quality').replaceChildren(new Option('Automática','-1'));}
+function reset(){generation++;if(videojsPlayer){videojsPlayer.dispose();videojsPlayer=null}$('video').hidden=false;if(hls){hls.destroy();hls=null}$('video').pause();$('video').removeAttribute('src');$('video').load();$('quality').replaceChildren(new Option('Automática','-1'));}
 async function play(c){
  reset();currentChannel=c;renderGuide();const myGeneration=generation;const v=$('video');$('current').textContent=c.name;$('placeholder').hidden=true;$('placeholder').style.display='none';$('playStatus').textContent='Conectando…';
  if(window.AndroidPlayer){window.AndroidPlayer.play(c.url,c.name);$('playStatus').textContent='Abierto en reproductor Android. Volvé con Atrás.';return}
@@ -50,8 +50,8 @@ async function play(c){
  const hlsAvailable=!!window.Hls?.isSupported();
  if(playbackEngine==='videojs'){
   if(typeof window.videojs!=='function'){$('playStatus').textContent='Video.js no está instalado en este paquete. Recompilá la aplicación.';return}
-  v.controls=false;v.classList.add('video-js','vjs-default-skin');
-  const p=window.videojs(v,{controls:true,autoplay:false,preload:'auto',fluid:false,html5:{vhs:{overrideNative:true}}});videojsPlayer=p;
+  v.hidden=true;const external=document.createElement('video');external.id='videojs-playback';external.className='video-js vjs-default-skin';external.setAttribute('playsinline','');external.style.cssText='width:100%;height:100%;position:absolute;inset:0';v.parentElement.append(external);
+  const p=window.videojs(external,{controls:true,autoplay:false,preload:'auto',fluid:false,html5:{vhs:{overrideNative:true}}});videojsPlayer=p;
   p.ready(()=>{if(myGeneration!==generation)return;p.src({src:c.url,type:isHls?'application/x-mpegURL':/\.mpd(?:[?#]|$)/i.test(c.url)?'application/dash+xml':'video/mp4'});p.play()?.catch?.(()=>{if(myGeneration===generation)$('playStatus').textContent='Video.js: no se pudo iniciar la señal.'})});
   p.on('error',()=>{if(myGeneration===generation)$('playStatus').textContent='Video.js: stream incompatible o no disponible.'});return;
  }
@@ -77,7 +77,7 @@ $('video').addEventListener('playing',()=>{$('playStatus').textContent='En vivo'
 $('video').addEventListener('error',()=>{$('playStatus').textContent='Error de reproducción: verificá disponibilidad y compatibilidad de la señal.'});
 $('quality').onchange=()=>{if(hls)hls.currentLevel=Number($('quality').value)};
 $('stop').onclick=()=>{reset();window.AndroidPlayer?.stop();$('playStatus').textContent='Reproducción detenida';$('placeholder').style.display='grid'};
-$('fullscreen').onclick=()=>{$('video').requestFullscreen?.().catch(()=>{$('playStatus').textContent='Pantalla completa no disponible'})};
+$('fullscreen').onclick=()=>{(videojsPlayer?.el()||$('video')).requestFullscreen?.().catch(()=>{$('playStatus').textContent='Pantalla completa no disponible'})};
 $('refresh').onclick=refresh;$('query').oninput=()=>{limit=80;render()};$('more').onclick=()=>{limit+=80;render()};
 $('country').onchange=()=>{country=$('country').value;limit=80;render()};$('category').onchange=()=>{category=$('category').value;limit=80;render()};
 $('favorites').onclick=()=>{onlyFavorites=!onlyFavorites;$('favorites').setAttribute('aria-pressed',String(onlyFavorites));render()};
