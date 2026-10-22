@@ -41,7 +41,7 @@ function render(){
 }
 function reset(){generation++;if(videojsPlayer){videojsPlayer.dispose();videojsPlayer=null}$('video').hidden=false;if(hls){hls.destroy();hls=null}$('video').pause();$('video').removeAttribute('src');$('video').load();$('quality').replaceChildren(new Option('Automática','-1'));}
 async function play(c){
- reset();currentChannel=c;renderGuide();const myGeneration=generation;const v=$('video');$('current').textContent=c.name;$('placeholder').hidden=true;$('placeholder').style.display='none';$('playStatus').textContent='Conectando…';
+ reset();$('playerPanel').hidden=false;currentChannel=c;renderGuide();$('playerPanel').scrollIntoView({behavior:'smooth',block:'start'});const myGeneration=generation;const v=$('video');$('current').textContent=c.name;$('placeholder').hidden=true;$('placeholder').style.display='none';$('playStatus').textContent='Conectando…';
  if(window.AndroidPlayer){window.AndroidPlayer.play(c.url,c.name);$('playStatus').textContent='Abierto en reproductor Android. Volvé con Atrás.';return}
  if(['https:','cxtv:'].includes(location.protocol)&&c.url.startsWith('http:')){$('playStatus').textContent='Esta señal usa HTTP. La web HTTPS puede bloquearla; probá la app Android.';return}
  const start=()=>v.play().catch(()=>{if(myGeneration===generation)$('playStatus').textContent='Usá el botón de reproducción. Si falla, la señal puede estar caída o restringida.'});
@@ -76,6 +76,7 @@ $('engine').onchange=()=>{
 $('video').addEventListener('playing',()=>{$('playStatus').textContent='En vivo'});
 $('video').addEventListener('error',()=>{$('playStatus').textContent='Error de reproducción: verificá disponibilidad y compatibilidad de la señal.'});
 $('quality').onchange=()=>{if(hls)hls.currentLevel=Number($('quality').value)};
+$('closePlayer').onclick=()=>{reset();window.AndroidPlayer?.stop();currentChannel=null;$('playerPanel').hidden=true;renderGuide();document.querySelector('.catalog').scrollIntoView({behavior:'smooth',block:'start'})};
 $('stop').onclick=()=>{reset();window.AndroidPlayer?.stop();$('playStatus').textContent='Reproducción detenida';$('placeholder').style.display='grid'};
 $('fullscreen').onclick=()=>{(videojsPlayer?.el()||$('video')).requestFullscreen?.().catch(()=>{$('playStatus').textContent='Pantalla completa no disponible'})};
 $('refresh').onclick=refresh;$('query').oninput=()=>{limit=80;render()};$('more').onclick=()=>{limit+=80;render()};
@@ -121,6 +122,9 @@ $('epgUrl').value=readJSON('cristal.epgUrl','');$('loadEpg').onclick=()=>loadGui
 $('epgFile').onchange=async()=>{const f=$('epgFile').files[0];if(!f)return;if(f.size>40*1024*1024){$('epgStatus').textContent='El XMLTV supera 40 MB';return}epgSequence++;try{await acceptGuide(await readXMLTV(f),'Archivo '+f.name,epgProviders.find(p=>p.url===$('epgUrl').value.trim())?.aliases||{},'file:'+f.name)}catch(e){$('epgStatus').textContent=e.message}};
 setInterval(renderGuide,60000);
 
+const backTop=$('backTop');
+window.addEventListener('scroll',()=>{backTop.hidden=window.scrollY<350},{passive:true});
+backTop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 refresh();
 
 async function initProviders(){
