@@ -28,15 +28,17 @@ try {
   const geometry=await page.evaluate(()=>{
    const r=id=>document.querySelector(id).getBoundingClientRect();
    const qr=r('.donation-qr'),donate=r('#donate'),skip=r('#skipWelcome');
-   return {ordered:qr.bottom<=donate.top&&donate.bottom<=skip.top,centered:Math.abs(qr.x+qr.width/2-donate.x-donate.width/2)<2,overflow:document.documentElement.scrollWidth>innerWidth};
+   return {ordered:qr.bottom<=donate.top&&donate.bottom<=skip.top,centered:Math.abs(qr.x+qr.width/2-donate.x-donate.width/2)<2,overflow:document.documentElement.scrollWidth>innerWidth,skipVisible:skip.bottom<=r('#welcome').bottom-8};
   });
   assert.ok(geometry.ordered&&geometry.centered&&!geometry.overflow,`${name}: QR → Donar → Saltar centrados, sin desborde`);
+  if(name==='android')assert.ok(geometry.skipVisible,'Saltar queda visible sin desplazamiento en móvil de 390 × 844');
   await page.locator('#welcome').evaluate(e=>e.scrollTop=0);
   await page.screenshot({path:`build/welcome-checks/${name}-top.png`});
   const requestPromise=context.waitForEvent('request',{predicate:req=>req.url()==='https://monedita.ar/cristalcleariptv'});
   const popupPromise=page.waitForEvent('popup');await page.locator('#donate').click();const popup=await popupPromise;
   assert.equal((await requestPromise).url(),'https://monedita.ar/cristalcleariptv','Abre el destino externo correcto');await popup.close();
   assert.equal(await page.locator('#welcome').evaluate(e=>e.open),true,'Donar no impide Saltar');
+  await page.locator('#skipWelcome').scrollIntoViewIfNeeded();
   await page.screenshot({path:`build/welcome-checks/${name}-actions.png`});
   await page.locator('#skipWelcome').click();assert.equal(await page.locator('#welcome').evaluate(e=>e.open),false);
   await page.reload();await page.waitForSelector('#welcome[open]');
