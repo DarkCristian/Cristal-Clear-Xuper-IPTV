@@ -34,9 +34,9 @@ try{
   assert.ok(await page.locator('.guide-gap').count()>0,'Huecos explícitos');
   assert.match(await page.locator('#guideCoverage').textContent(),/2 de 4 señales/);
   assert.ok(await page.locator('.guide-slot.current').count()>0);
+  await page.screenshot({path:`build/epg-checks/${name}.png`});
   await page.locator('.guide-slot').filter({hasText:'Programa de prueba ahora'}).click();
   assert.equal(await page.locator('#programmeDialog').evaluate(e=>e.open),true);assert.equal(await page.locator('#programmeDescription img').count(),0,'La descripción es texto, no HTML');await page.locator('#programmeClose').click();
-  await page.screenshot({path:`build/epg-checks/${name}.png`});
   if(name==='android')assert.ok(await page.locator('#guideGrid').evaluate(e=>e.scrollWidth>e.clientWidth),'La línea de tiempo permite desplazamiento horizontal en móvil');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'La grilla no desborda la página');
   const oldWindow=await page.locator('#guideWindow').textContent();await page.locator('#guideNext').click();assert.notEqual(await page.locator('#guideWindow').textContent(),oldWindow);await page.locator('#guideNowButton').click();

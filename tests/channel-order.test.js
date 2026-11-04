@@ -11,3 +11,9 @@ test('ESPN 2 no se confunde con ESPN y no se pierde ningún stream',()=>{
  const list=[c('2','ESPN 2 (1080p)','ESPN2.us@Argentina',['sports']),c('1','ESPN (720p)','ESPN.us@Argentina',['sports'])];
  const result=orderGuideChannels(list,{channels:[{name:'ESPN',matches:['ESPN'],categories:['sports']},{name:'ESPN 2',matches:['ESPN2'],categories:['sports']}]});assert.deepEqual(result.map(c=>c.id),['1','2']);assert.equal(new Set(result.map(c=>c.id)).size,2);
 });
+
+test('Canal 13 extranjero no se identifica como El Trece argentino por un alias genérico',()=>{
+ const ar=c('ar','El Trece','ElTrece.ar@SD');const cl={...c('cl','Canal 13 (Chile)','Canal13.cl@SD'),country:'CL'};
+ const result=orderGuideChannels([cl,ar],{channels:[{name:'El Trece',matches:['ElTrece.ar','Canal 13'],categories:['general']}]});
+ assert.deepEqual(result.map(c=>c.id),['ar','cl']);assert.equal(result[0].referenceName,'El Trece');assert.equal(result[1].referenceName,'');
+});
