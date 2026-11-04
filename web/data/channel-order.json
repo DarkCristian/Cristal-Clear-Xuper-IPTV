@@ -1,0 +1,1888 @@
+{
+  "reference": "https://www.personal.com.ar/flow/guia-de-canales",
+  "corroboratingSource": "https://www.tvchannellists.com/w/List_of_channels_on_Flow_(Argentina)",
+  "checkedAt": "2026-11-04",
+  "note": "Modelo nacional de Flow; la consulta oficial por zona devolvió HTTP 403. No es copia certificada de la grilla local. No incluye portales interactivos ni señales promocionales sin equivalente. La numeración visible es propia, consecutiva.",
+  "channels": [
+    {
+      "referenceNumber": 8,
+      "name": "Metro",
+      "matches": [
+        "Metro"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 9,
+      "name": "América",
+      "matches": [
+        "América",
+        "America TV",
+        "AmericaTV",
+        "AmericaTV.ar",
+        "América TV"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 10,
+      "name": "Telefe",
+      "matches": [
+        "Telefe",
+        "Telefe.ar",
+        "TelefeInternacional.ar"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 11,
+      "name": "Canal Siete",
+      "matches": [
+        "Canal Siete",
+        "TV Pública",
+        "TVPublica",
+        "TVPublica.ar",
+        "Canal 7",
+        "CanalSiete.ar"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 12,
+      "name": "El Trece",
+      "matches": [
+        "El Trece",
+        "ElTrece",
+        "ElTrece.ar",
+        "Canal 13"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 13,
+      "name": "El Nueve",
+      "matches": [
+        "El Nueve",
+        "ElNueve",
+        "ElNueve.ar",
+        "Canal 9"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 14,
+      "name": "Todo Noticias",
+      "matches": [
+        "Todo Noticias",
+        "TN",
+        "TN.ar"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 15,
+      "name": "A24",
+      "matches": [
+        "A24"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 16,
+      "name": "C5N",
+      "matches": [
+        "C5N"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 17,
+      "name": "Crónica TV",
+      "matches": [
+        "Crónica TV",
+        "CronicaTV.ar",
+        "Cronica TV"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 18,
+      "name": "Canal 26",
+      "matches": [
+        "Canal 26",
+        "Canal26.ar"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 19,
+      "name": "LN+",
+      "matches": [
+        "LN+",
+        "La Nación +",
+        "La Nacion Mas",
+        "LaNacionMas.ar",
+        "LNPlus.ar"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 20,
+      "name": "Ciudad Magazine",
+      "matches": [
+        "Ciudad Magazine",
+        "CiudadMagazine.ar",
+        "Magazine"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 21,
+      "name": "NET TV",
+      "matches": [
+        "NET TV",
+        "NetTV.ar"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 22,
+      "name": "Encuentro",
+      "matches": [
+        "Encuentro"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 23,
+      "name": "CNN en Español",
+      "matches": [
+        "CNN en Español",
+        "CNN en Espanol",
+        "CNNenEspanol.us"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 24,
+      "name": "Argentina/12",
+      "matches": [
+        "Argentina/12",
+        "Argentina12.ar"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 25,
+      "name": "Alpha TV",
+      "matches": [
+        "Alpha TV"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 26,
+      "name": "Caras TV",
+      "matches": [
+        "Caras TV"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 30,
+      "name": "KZO Entertainment",
+      "matches": [
+        "KZO Entertainment"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 36,
+      "name": "Diputados TV",
+      "matches": [
+        "Diputados TV"
+      ],
+      "categories": [
+        "legislative"
+      ]
+    },
+    {
+      "referenceNumber": 85,
+      "name": "Mix TV",
+      "matches": [
+        "Mix TV"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 90,
+      "name": "Senado Argentina",
+      "matches": [
+        "Senado Argentina"
+      ],
+      "categories": [
+        "legislative"
+      ]
+    },
+    {
+      "referenceNumber": 90,
+      "name": "TyC Sports 2",
+      "matches": [
+        "TyC Sports 2"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 100,
+      "name": "DEPORTV",
+      "matches": [
+        "DEPORTV",
+        "DeporTV.ar"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 101,
+      "name": "TyC Sports",
+      "matches": [
+        "TyC Sports",
+        "TyCSports.ar",
+        "TyCSportsInternacional.ar"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 102,
+      "name": "ESPN2",
+      "matches": [
+        "ESPN2",
+        "ESPN2.us",
+        "ESPN 2"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 103,
+      "name": "ESPN",
+      "matches": [
+        "ESPN",
+        "ESPN.us",
+        "ESPN1.us"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 104,
+      "name": "ESPN3",
+      "matches": [
+        "ESPN3",
+        "ESPN3.us",
+        "ESPN 3"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 105,
+      "name": "ESPN4",
+      "matches": [
+        "ESPN4",
+        "ESPN4.us",
+        "ESPN 4"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 106,
+      "name": "FOX Sports",
+      "matches": [
+        "FOX Sports",
+        "FoxSports.ar",
+        "Fox Sports"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 107,
+      "name": "FOX Sports 2",
+      "matches": [
+        "FOX Sports 2",
+        "FoxSports2.ar"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 108,
+      "name": "FOX Sports 3",
+      "matches": [
+        "FOX Sports 3",
+        "FoxSports3.ar"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 109,
+      "name": "DSports",
+      "matches": [
+        "DSports",
+        "DSports.ar",
+        "DirecTV Sports"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 110,
+      "name": "DSports 2",
+      "matches": [
+        "DSports 2"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 111,
+      "name": "NBA TV",
+      "matches": [
+        "NBA TV"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 112,
+      "name": "Discovery Turbo",
+      "matches": [
+        "Discovery Turbo"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 113,
+      "name": "PX Sports",
+      "matches": [
+        "PX Sports"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 114,
+      "name": "El Garage TV",
+      "matches": [
+        "El Garage TV"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 115,
+      "name": "América Sports",
+      "matches": [
+        "América Sports"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 116,
+      "name": "Golf Channel Latin America",
+      "matches": [
+        "Golf Channel Latin America"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 123,
+      "name": "ESPN Premium",
+      "matches": [
+        "ESPN Premium"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 124,
+      "name": "TNT Sports Premium",
+      "matches": [
+        "TNT Sports Premium",
+        "TNTSports.ar",
+        "TNT Sports"
+      ],
+      "categories": [
+        "sports"
+      ]
+    },
+    {
+      "referenceNumber": 200,
+      "name": "Paka Paka",
+      "matches": [
+        "Paka Paka",
+        "Pakapaka",
+        "Pakapaka.ar"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 201,
+      "name": "Disney Channel",
+      "matches": [
+        "Disney Channel"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 202,
+      "name": "Nickelodeon",
+      "matches": [
+        "Nickelodeon"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 203,
+      "name": "Cartoon Network",
+      "matches": [
+        "Cartoon Network"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 204,
+      "name": "Dreamworks Channel",
+      "matches": [
+        "Dreamworks Channel"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 205,
+      "name": "Discovery Kids",
+      "matches": [
+        "Discovery Kids"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 206,
+      "name": "Cartoonito",
+      "matches": [
+        "Cartoonito"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 207,
+      "name": "Disney Junior",
+      "matches": [
+        "Disney Junior"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 208,
+      "name": "Baby TV",
+      "matches": [
+        "Baby TV"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 209,
+      "name": "Tooncast",
+      "matches": [
+        "Tooncast"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 210,
+      "name": "Nick Jr.",
+      "matches": [
+        "Nick Jr."
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 211,
+      "name": "El canal del payaso Plim Plim",
+      "matches": [
+        "El canal del payaso Plim Plim"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 212,
+      "name": "Kidoo",
+      "matches": [
+        "Kidoo"
+      ],
+      "categories": [
+        "kids",
+        "animation"
+      ]
+    },
+    {
+      "referenceNumber": 250,
+      "name": "HBO",
+      "matches": [
+        "HBO"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 251,
+      "name": "HBO 2",
+      "matches": [
+        "HBO 2"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 252,
+      "name": "HBO Plus",
+      "matches": [
+        "HBO Plus"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 254,
+      "name": "HBO Mundi",
+      "matches": [
+        "HBO Mundi"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 255,
+      "name": "HBO Pop",
+      "matches": [
+        "HBO Pop"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 256,
+      "name": "HBO Xtreme",
+      "matches": [
+        "HBO Xtreme"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 258,
+      "name": "HBO Family",
+      "matches": [
+        "HBO Family"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 259,
+      "name": "HBO Signature",
+      "matches": [
+        "HBO Signature"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 260,
+      "name": "Universal Premiere",
+      "matches": [
+        "Universal Premiere"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 261,
+      "name": "Universal Cinema",
+      "matches": [
+        "Universal Cinema"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 262,
+      "name": "Universal Comedy",
+      "matches": [
+        "Universal Comedy"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 263,
+      "name": "Universal Crime",
+      "matches": [
+        "Universal Crime"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 264,
+      "name": "Universal Reality",
+      "matches": [
+        "Universal Reality"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 300,
+      "name": "Cine.AR",
+      "matches": [
+        "Cine.AR",
+        "CineAr",
+        "Cine.ar",
+        "CineAR.ar"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 301,
+      "name": "Cinemax",
+      "matches": [
+        "Cinemax"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 303,
+      "name": "Volver",
+      "matches": [
+        "Volver"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 304,
+      "name": "Space",
+      "matches": [
+        "Space"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 305,
+      "name": "Cinecanal",
+      "matches": [
+        "Cinecanal"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 306,
+      "name": "TNT",
+      "matches": [
+        "TNT"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 307,
+      "name": "TNT Series",
+      "matches": [
+        "TNT Series"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 308,
+      "name": "FX",
+      "matches": [
+        "FX"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 309,
+      "name": "Star Channel",
+      "matches": [
+        "Star Channel"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 310,
+      "name": "Sony Channel",
+      "matches": [
+        "Sony Channel"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 311,
+      "name": "Warner Channel",
+      "matches": [
+        "Warner Channel"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 312,
+      "name": "Universal TV",
+      "matches": [
+        "Universal TV"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 313,
+      "name": "AXN",
+      "matches": [
+        "AXN"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 314,
+      "name": "Studio Universal",
+      "matches": [
+        "Studio Universal"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 315,
+      "name": "A&E",
+      "matches": [
+        "A&E"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 316,
+      "name": "Europa Europa",
+      "matches": [
+        "Europa Europa"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 317,
+      "name": "USA",
+      "matches": [
+        "USA"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 318,
+      "name": "TCM",
+      "matches": [
+        "TCM"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 319,
+      "name": "AMC",
+      "matches": [
+        "AMC"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 320,
+      "name": "AMC Series",
+      "matches": [
+        "AMC Series"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 321,
+      "name": "Atreseries",
+      "matches": [
+        "Atreseries"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 322,
+      "name": "Golden",
+      "matches": [
+        "Golden"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 323,
+      "name": "Sony Movies",
+      "matches": [
+        "Sony Movies"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 324,
+      "name": "Eurochannel",
+      "matches": [
+        "Eurochannel"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 325,
+      "name": "Investigation Discovery",
+      "matches": [
+        "Investigation Discovery"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 326,
+      "name": "Comedy Central",
+      "matches": [
+        "Comedy Central"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 328,
+      "name": "Atrescine",
+      "matches": [
+        "Atrescine"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 329,
+      "name": "DHE",
+      "matches": [
+        "DHE"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 330,
+      "name": "Pasiones",
+      "matches": [
+        "Pasiones"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 331,
+      "name": "Telemundo Internacional",
+      "matches": [
+        "Telemundo Internacional"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 332,
+      "name": "TNT Novelas",
+      "matches": [
+        "TNT Novelas"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 333,
+      "name": "Tlnovelas",
+      "matches": [
+        "Tlnovelas"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 335,
+      "name": "Adult Swim",
+      "matches": [
+        "Adult Swim"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 400,
+      "name": "Lifetime",
+      "matches": [
+        "Lifetime"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 401,
+      "name": "El Gourmet",
+      "matches": [
+        "El Gourmet",
+        "ElGourmet.ar"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 403,
+      "name": "Food Network",
+      "matches": [
+        "Food Network"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 404,
+      "name": "E!",
+      "matches": [
+        "E!",
+        "E Entertainment",
+        "EEntertainment.us"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 405,
+      "name": "Discovery Home & Health",
+      "matches": [
+        "Discovery Home & Health"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 407,
+      "name": "TLC",
+      "matches": [
+        "TLC"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 408,
+      "name": "HGTV",
+      "matches": [
+        "HGTV"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 409,
+      "name": "¡Hola! TV",
+      "matches": [
+        "¡Hola! TV",
+        "Hola TV",
+        "HolaTV.us"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 420,
+      "name": "Canal Rural",
+      "matches": [
+        "Canal Rural"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 422,
+      "name": "Sun Channel",
+      "matches": [
+        "Sun Channel"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 423,
+      "name": "Telemax",
+      "matches": [
+        "Telemax"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 424,
+      "name": "Santa María",
+      "matches": [
+        "Santa María"
+      ],
+      "categories": [
+        "religious"
+      ]
+    },
+    {
+      "referenceNumber": 425,
+      "name": "Orbe21",
+      "matches": [
+        "Orbe21"
+      ],
+      "categories": [
+        "religious"
+      ]
+    },
+    {
+      "referenceNumber": 426,
+      "name": "EWTN",
+      "matches": [
+        "EWTN"
+      ],
+      "categories": [
+        "religious"
+      ]
+    },
+    {
+      "referenceNumber": 427,
+      "name": "Canal Luz",
+      "matches": [
+        "Canal Luz"
+      ],
+      "categories": [
+        "religious"
+      ]
+    },
+    {
+      "referenceNumber": 450,
+      "name": "National Geographic",
+      "matches": [
+        "National Geographic"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 451,
+      "name": "Discovery Channel",
+      "matches": [
+        "Discovery Channel"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 452,
+      "name": "Animal Planet",
+      "matches": [
+        "Animal Planet"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 453,
+      "name": "Discovery Theater",
+      "matches": [
+        "Discovery Theater"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 454,
+      "name": "History",
+      "matches": [
+        "History"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 456,
+      "name": "Canal (á)",
+      "matches": [
+        "Canal (á)",
+        "CanalA.ar",
+        "Canal a"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 457,
+      "name": "Film&Arts",
+      "matches": [
+        "Film&Arts"
+      ],
+      "categories": [
+        "movies",
+        "series"
+      ]
+    },
+    {
+      "referenceNumber": 458,
+      "name": "History 2",
+      "matches": [
+        "History 2"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 460,
+      "name": "Discovery World",
+      "matches": [
+        "Discovery World"
+      ],
+      "categories": [
+        "lifestyle",
+        "cooking"
+      ]
+    },
+    {
+      "referenceNumber": 462,
+      "name": "Discovery Science",
+      "matches": [
+        "Discovery Science"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 501,
+      "name": "Quiero Música en mi Idioma",
+      "matches": [
+        "Quiero Música en mi Idioma",
+        "QuieroMusicaEnMiIdioma.ar",
+        "Quiero Musica"
+      ],
+      "categories": [
+        "music"
+      ]
+    },
+    {
+      "referenceNumber": 502,
+      "name": "Vorterix",
+      "matches": [
+        "Vorterix"
+      ],
+      "categories": [
+        "music"
+      ]
+    },
+    {
+      "referenceNumber": 503,
+      "name": "Allegro HD",
+      "matches": [
+        "Allegro HD"
+      ],
+      "categories": [
+        "music"
+      ]
+    },
+    {
+      "referenceNumber": 505,
+      "name": "HTV",
+      "matches": [
+        "HTV"
+      ],
+      "categories": [
+        "music"
+      ]
+    },
+    {
+      "referenceNumber": 507,
+      "name": "CM",
+      "matches": [
+        "CM",
+        "Canal de la Musica",
+        "CMElCanalDeLaMusica.ar"
+      ],
+      "categories": [
+        "music"
+      ]
+    },
+    {
+      "referenceNumber": 515,
+      "name": "Canal de la Ciudad",
+      "matches": [
+        "Canal de la Ciudad"
+      ],
+      "categories": [
+        "documentary",
+        "education",
+        "culture"
+      ]
+    },
+    {
+      "referenceNumber": 519,
+      "name": "Somos La Plata",
+      "matches": [
+        "Somos La Plata"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 520,
+      "name": "Somos Rosario",
+      "matches": [
+        "Somos Rosario"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 522,
+      "name": "Somos Santa Fe",
+      "matches": [
+        "Somos Santa Fe"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 523,
+      "name": "Somos Salta-Jujuy",
+      "matches": [
+        "Somos Salta-Jujuy"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 525,
+      "name": "Somos Mar del Plata",
+      "matches": [
+        "Somos Mar del Plata"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 526,
+      "name": "Somos El Valle",
+      "matches": [
+        "Somos El Valle"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 539,
+      "name": "Canal C Argentina",
+      "matches": [
+        "Canal C Argentina"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 548,
+      "name": "CYD Litoral",
+      "matches": [
+        "CYD Litoral"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 548,
+      "name": "Rafaela Noticias TV",
+      "matches": [
+        "Rafaela Noticias TV"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 551,
+      "name": "RAI Italia",
+      "matches": [
+        "RAI Italia"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 552,
+      "name": "Bloomberg",
+      "matches": [
+        "Bloomberg"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 553,
+      "name": "TV Chile",
+      "matches": [
+        "TV Chile"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 554,
+      "name": "TV5MONDE Amérique Latine",
+      "matches": [
+        "TV5MONDE Amérique Latine"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 555,
+      "name": "Antena 3 Internacional",
+      "matches": [
+        "Antena 3 Internacional"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 556,
+      "name": "Telesur",
+      "matches": [
+        "Telesur",
+        "teleSUR.ve"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 557,
+      "name": "CNN",
+      "matches": [
+        "CNN"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 558,
+      "name": "BBC News",
+      "matches": [
+        "BBC News"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 559,
+      "name": "Fox News International",
+      "matches": [
+        "Fox News International"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 560,
+      "name": "Al Jazeera",
+      "matches": [
+        "Al Jazeera"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 561,
+      "name": "Euronews",
+      "matches": [
+        "Euronews"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 562,
+      "name": "DW Español",
+      "matches": [
+        "DW Español",
+        "DW Espanol",
+        "DWEspanol.de"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 563,
+      "name": "TVE Internacional",
+      "matches": [
+        "TVE Internacional",
+        "TVEInternacional.es"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 564,
+      "name": "TV Galicia América",
+      "matches": [
+        "TV Galicia América"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 565,
+      "name": "Las Estrellas Latinoamérica",
+      "matches": [
+        "Las Estrellas Latinoamérica",
+        "Las Estrellas",
+        "LasEstrellas.mx"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 566,
+      "name": "Arirang",
+      "matches": [
+        "Arirang"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 567,
+      "name": "UCL",
+      "matches": [
+        "UCL"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 568,
+      "name": "France 24 Français",
+      "matches": [
+        "France 24 Français"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 569,
+      "name": "BandNews TV",
+      "matches": [
+        "BandNews TV"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 570,
+      "name": "DNEWS",
+      "matches": [
+        "DNEWS"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 571,
+      "name": "+Perfil",
+      "matches": [
+        "+Perfil"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 573,
+      "name": "Argentinísima Satelital",
+      "matches": [
+        "Argentinísima Satelital"
+      ],
+      "categories": [
+        "general",
+        "entertainment"
+      ]
+    },
+    {
+      "referenceNumber": 575,
+      "name": "France 24 en Español",
+      "matches": [
+        "France 24 en Español",
+        "France24Espanol.fr",
+        "France 24 Español"
+      ],
+      "categories": [
+        "news"
+      ]
+    },
+    {
+      "referenceNumber": 800,
+      "name": "Playboy TV",
+      "matches": [
+        "Playboy TV"
+      ],
+      "categories": [
+        "xxx"
+      ]
+    },
+    {
+      "referenceNumber": 801,
+      "name": "Venus",
+      "matches": [
+        "Venus"
+      ],
+      "categories": [
+        "xxx"
+      ]
+    },
+    {
+      "referenceNumber": 802,
+      "name": "Hustler Mature",
+      "matches": [
+        "Hustler Mature"
+      ],
+      "categories": [
+        "xxx"
+      ]
+    },
+    {
+      "referenceNumber": 803,
+      "name": "SEXTREME",
+      "matches": [
+        "SEXTREME"
+      ],
+      "categories": [
+        "xxx"
+      ]
+    }
+  ]
+}

@@ -13,6 +13,17 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.*;
 import android.widget.Toast;
+import android.util.Base64;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.json.JSONObject;
 import androidx.webkit.WebViewAssetLoader;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
@@ -22,6 +33,15 @@ import androidx.media3.ui.PlayerView;
 
 public class MainActivity extends Activity {
     private WebView web;
+    private final ExecutorService epgExecutor = Executors.newSingleThreadExecutor();
+    private static final Set<String> EPG_URLS = new HashSet<>(Arrays.asList(
+        "https://www.tdtchannels.com/epg/TV.xml",
+        "https://www.open-epg.com/files/argentina2.xml",
+        "https://www.open-epg.com/files/spain1.xml",
+        "https://www.open-epg.com/files/mexico1.xml",
+        "https://www.open-epg.com/files/peru1.xml",
+        "https://epgshare01.online/epgshare01/epg_ripper_ES1.xml.gz"
+    ));
     private ExoPlayer player;
     private Dialog dialog;
     private PlayerView playerView;
@@ -61,9 +81,51 @@ public class MainActivity extends Activity {
                     }
                 });
             }
+            @JavascriptInterface public void fetchEpg(String url, String requestId) {
+                if (requestId == null || !requestId.matches("[0-9]{1,10}") || epgExecutor.isShutdown()) return;
+                epgExecutor.execute(() -> downloadEpg(url, requestId));
+            }
             @JavascriptInterface public void stop() { runOnUiThread(() -> closePlayer()); }
         }, "AndroidPlayer");
         web.loadUrl("https://appassets.androidplatform.net/assets/www/index.html");
+    }
+
+    // Solo fuentes EPG HTTPS conocidas. No acepta URLs arbitrarias, cookies ni redirecciones.
+    private void downloadEpg(String url, String requestId) {
+        JSONObject result = new JSONObject();
+        HttpsURLConnection connection = null;
+        try {
+            result.put("id", requestId);
+            if (!EPG_URLS.contains(url)) throw new Exception("Fuente no habilitada para descarga nativa");
+            connection = (HttpsURLConnection) new URL(url).openConnection();
+            connection.setInstanceFollowRedirects(false);
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(20000);
+            connection.setRequestProperty("Accept-Encoding", "identity");
+            connection.setRequestProperty("User-Agent", "CristalClear-IPTV/0.3 EPG");
+            if (connection.getResponseCode() != 200) throw new Exception("HTTP " + connection.getResponseCode());
+            final int maxBytes = 40 * 1024 * 1024;
+            if (connection.getContentLength() > maxBytes) throw new Exception("La guía supera 40 MB");
+            long deadline = System.currentTimeMillis() + 35000;
+            try (InputStream input = connection.getInputStream(); ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                byte[] chunk = new byte[8192]; int size;
+                while ((size = input.read(chunk)) != -1) {
+                    if (Thread.currentThread().isInterrupted()) return;
+                    if (output.size() + size > maxBytes) throw new Exception("La guía supera 40 MB");
+                    if (System.currentTimeMillis() > deadline) throw new Exception("Tiempo de espera agotado");
+                    output.write(chunk, 0, size);
+                }
+                result.put("body", Base64.encodeToString(output.toByteArray(), Base64.NO_WRAP));
+            }
+        } catch (Exception error) {
+            try { result.put("error", error.getMessage() == null ? "No se pudo descargar la guía" : error.getMessage()); } catch (Exception ignored) { }
+        } finally { if (connection != null) connection.disconnect(); }
+        final String payload = result.toString();
+        runOnUiThread(() -> {
+            if (web != null && !isFinishing() && !isDestroyed()) {
+                web.evaluateJavascript("window.dispatchEvent(new CustomEvent('native-epg',{detail:" + payload + "}));", null);
+            }
+        });
     }
 
     private void openPlayer(String url, String name) {
@@ -167,8 +229,9 @@ public class MainActivity extends Activity {
     }
 
     @Override protected void onDestroy() {
+        epgExecutor.shutdownNow();
         closePlayer();
-        if (web != null) { web.removeJavascriptInterface("AndroidPlayer"); web.destroy(); }
+        if (web != null) { web.removeJavascriptInterface("AndroidPlayer"); web.destroy(); web = null; }
         super.onDestroy();
     }
 }
