@@ -125,6 +125,13 @@ setInterval(renderGuide,60000);
 const backTop=$('backTop');
 window.addEventListener('scroll',()=>{backTop.hidden=window.scrollY<350},{passive:true});
 backTop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+const welcomeOverlay=$('welcomeOverlay');
+const welcomeClose=$('welcomeClose');
+if(welcomeOverlay&&welcomeClose){
+  document.body.style.overflow='hidden';
+  welcomeClose.addEventListener('click',()=>{welcomeOverlay.hidden=true;document.body.style.overflow='';});
+  welcomeClose.focus();
+}
 refresh();
 
 async function initProviders(){
