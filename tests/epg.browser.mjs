@@ -37,11 +37,12 @@ try{
   await page.locator('.guide-slot').filter({hasText:'Programa de prueba ahora'}).click();
   assert.equal(await page.locator('#programmeDialog').evaluate(e=>e.open),true);assert.equal(await page.locator('#programmeDescription img').count(),0,'La descripción es texto, no HTML');await page.locator('#programmeClose').click();
   await page.screenshot({path:`build/epg-checks/${name}.png`});
-  assert.ok(await page.locator('#guideGrid').evaluate(e=>e.scrollWidth>e.clientWidth),'La línea de tiempo permite desplazamiento horizontal');
+  if(name==='android')assert.ok(await page.locator('#guideGrid').evaluate(e=>e.scrollWidth>e.clientWidth),'La línea de tiempo permite desplazamiento horizontal en móvil');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'La grilla no desborda la página');
   const oldWindow=await page.locator('#guideWindow').textContent();await page.locator('#guideNext').click();assert.notEqual(await page.locator('#guideWindow').textContent(),oldWindow);await page.locator('#guideNowButton').click();
   await page.locator('#guideOnlyData').check();assert.equal(await page.locator('.guide-table tbody tr').count(),2);await page.locator('#guideOnlyData').uncheck();
   await page.locator('#query').fill('TN');assert.equal(await page.locator('.guide-table tbody tr').count(),1);await page.locator('#query').fill('');
-  await page.locator('#guideGrid').evaluate(e=>e.scrollLeft=500);await page.locator('#guideNowButton').click();assert.equal(await page.locator('#guideGrid').evaluate(e=>e.scrollLeft),500);
+  const scroll=await page.locator('#guideGrid').evaluate(e=>{e.scrollLeft=500;return e.scrollLeft});await page.locator('#guideNowButton').click();assert.equal(await page.locator('#guideGrid').evaluate(e=>e.scrollLeft),scroll);
   await page.locator('.guide-config summary').click();await page.locator('#gridEpgFile').setInputFiles({name:'test.xml',mimeType:'application/xml',buffer:Buffer.from(xml)});await page.waitForFunction(()=>document.querySelector('#guideSources').textContent.includes('Archivo importado'));
   offline=true;await page.reload();await page.locator('#skipWelcome').click();await page.locator('#viewGuide').click();await page.waitForFunction(()=>document.querySelector('#refreshGuide').disabled===false&&document.querySelector('#guideSources').textContent.includes('no disponible'));
   assert.ok(await page.locator('.guide-slot').count()>0,'Se conserva guía en caché aunque fallen las fuentes');

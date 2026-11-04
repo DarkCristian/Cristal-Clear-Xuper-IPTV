@@ -147,13 +147,13 @@ async function loadGuide(custom=false,included=false){
  try{const response=url?await fetchGuide(url):await fetch('data/guide.xml');if(!response.ok)throw Error('HTTP '+response.status);const text=await readXMLTV(response);if(seq!==epgSequence)return;const provider=epgProviders.find(p=>p.url===url);const count=acceptGuide(text,'Guía externa',provider?.aliases||{},url||'included');if(custom)save('cristal.epgUrl',url);sourceStatus('Guía cargada: '+count+' señales con datos recientes.');await writeGuideCache(guide,epgUpdatedAt).catch(()=>{});}
  catch(error){if(seq===epgSequence)sourceStatus('Guía no disponible: '+error.message+'. Podés importar un XMLTV.')}
 }
-async function importGuide(file){
+async function importGuide(file,aliases={}){
  if(!file)return;if(file.size>40*1024*1024){sourceStatus('El XMLTV supera 40 MB');return}
- const seq=++epgSequence;try{const text=await readXMLTV(file);if(seq!==epgSequence)return;const count=acceptGuide(text,'Archivo '+file.name,{},'file');sourceStatus('Archivo importado: '+count+' señales.');await writeGuideCache(guide,epgUpdatedAt).catch(()=>{});}catch(error){sourceStatus(error.message)}
+ const seq=++epgSequence;try{const text=await readXMLTV(file);if(seq!==epgSequence)return;const count=acceptGuide(text,'Archivo '+file.name,aliases,'file');sourceStatus('Archivo importado: '+count+' señales.');await writeGuideCache(guide,epgUpdatedAt).catch(()=>{});}catch(error){sourceStatus(error.message)}
 }
 $('epgUrl').value=readJSON('cristal.epgUrl','');$('gridEpgUrl').value=$('epgUrl').value;$('loadEpg').onclick=()=>loadGuide(true);
 $('gridLoadEpg').onclick=()=>{$('epgUrl').value=$('gridEpgUrl').value;loadGuide(true)};
-$('epgFile').onchange=()=>importGuide($('epgFile').files[0]);$('gridEpgFile').onchange=()=>importGuide($('gridEpgFile').files[0]);
+$('epgFile').onchange=()=>importGuide($('epgFile').files[0],epgProviders.find(p=>p.id===$('epgProvider').value)?.aliases||{});$('gridEpgFile').onchange=()=>importGuide($('gridEpgFile').files[0],epgProviders.find(p=>p.id===$('gridProvider').value)?.aliases||{});
 setInterval(renderGuide,60000);setInterval(updateGuides,4*60*60*1000);
 
 const backTop=$('backTop');

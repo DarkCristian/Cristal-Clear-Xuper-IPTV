@@ -79,7 +79,7 @@ Los cuatro paquetes de la release corresponden exactamente a los artifacts de la
 
 ## Interfaz y motores
 
-El catálogo combinado usa `spa.m3u` y `movies.m3u`, deduplica URLs y prioriza Argentina, deportes y películas. La interfaz oculta el reproductor hasta elegir una señal, permite volver al catálogo, dispone de botón flotante para regresar arriba y oculta las opciones manuales de XMLTV. La guía incluida es parcial; **la grilla EPG unificada completa sigue pendiente**.
+El catálogo combinado usa `spa.m3u` y `movies.m3u` y deduplica URLs. En esta rama de prueba 0.3.0, el orden usa un modelo nacional de Flow adaptado, con variantes juntas y señales adicionales al final. La interfaz ofrece vistas **Canales** y **Guía de programación**, con grilla horaria, actualización de fuentes públicas, caché e importación manual de XMLTV. La cobertura de programación sigue siendo parcial y se identifica por canal; ver [alcance de la grilla](docs/EPG-GRID.md).
 
 En web, Chrome/Edge, Windows y Linux se ofrecen HTML5, HLS.js y Video.js (archivos locales). En Android se utiliza Media3 nativo. La disponibilidad real depende de CORS, códecs y de cada origen. La selección de Video.js no garantiza compatibilidad con DASH u otros formatos.
 
