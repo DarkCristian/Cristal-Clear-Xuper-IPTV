@@ -11,7 +11,23 @@ concurrency:
 permissions:
   contents: read
 jobs:
+  epg-snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 scripts/update-epg.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cristal-clear-epg-snapshot
+          path: |
+            web/data/guide.xml
+            web/data/guide-status.json
+          if-no-files-found: error
   desktop:
+    needs: epg-snapshot
     strategy:
       fail-fast: false
       matrix:
@@ -23,6 +39,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-epg-snapshot
+          path: web/data/
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -42,9 +62,14 @@ jobs:
             dist/*.deb
           if-no-files-found: error
   browser-packages:
+    needs: epg-snapshot
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-epg-snapshot
+          path: web/data/
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -54,11 +79,15 @@ jobs:
       - run: npm ci --ignore-scripts
       - name: Verify welcome on desktop and mobile viewports
         run: npm run test:welcome
+      - name: Verify EPG grid and refresh
+        run: npm run test:epg
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: cristal-clear-welcome-screenshots
-          path: build/welcome-checks/
+          path: |
+            build/welcome-checks/
+            build/epg-checks/
           if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         with:
@@ -76,9 +105,14 @@ jobs:
           path: web/
           if-no-files-found: error
   android:
+    needs: epg-snapshot
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-epg-snapshot
+          path: web/data/
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

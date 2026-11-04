@@ -1,0 +1,6 @@
+{
+  "updatedAt": null,
+  "channels": 0,
+  "programmes": 0,
+  "note": "El workflow genera una copia reciente y reemplaza este informe antes de empaquetar. Para compilación local ejecutar npm run epg:update."
+}

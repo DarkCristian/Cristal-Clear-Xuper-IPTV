@@ -206,3 +206,7 @@ La web y Android WebView pueden bloquear URLs sin CORS. En ese caso descargar el
 ## Bienvenida y colaboraciones
 
 Cuadro opcional con aviso breve de derechos de terceros, diseño oscuro y verde menta, y aportes sugeridos desde ARS 500 por Mercado Pago o USD 10 por PayPal. QR centrado, botón **Donar** y botón **Saltar**, en ese orden. Disponible en Android, Windows, Linux y extensiones Chrome/Edge; se muestra en cada arranque y puede volver a abrirse desde **Colaborar**. [Colaborar en Monedita](https://monedita.ar/cristalcleariptv). [Funcionamiento y validación](docs/WELCOME.md).
+
+## Vista de grilla EPG (prueba 0.3.0)
+
+Botón **Guía de programación**, línea de tiempo de seis horas, filtros compartidos, detalle de programas y apertura del canal en vivo. Actualiza fuentes públicas al iniciar y cada cuatro horas, con caché y copia reciente generada durante la compilación. Los canales sin cobertura muestran **Sin información**. Orden nacional de referencia Flow adaptado: variantes consecutivas, similares identificados y canales adicionales al final. [Alcance, fuentes, funcionamiento y pruebas](docs/EPG-GRID.md).

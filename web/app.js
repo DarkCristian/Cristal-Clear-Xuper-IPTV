@@ -1,7 +1,13 @@
+import {orderGuideChannels} from './channel-order.js';
+import {createGuideView} from './guide-view.js';
+import {pruneGuide,guideCoverage} from './epg-grid.js';
+import {readGuideCache,writeGuideCache} from './epg-cache.js';
+import {fetchGuide} from './epg-fetch.js';
 import {parseXMLTV,nowNext,mergeGuides,readXMLTV} from './epg.js';
 import {SOURCES,parseM3U,mergeChannels,filterChannels,unifiedCatalog,safeURL,compareCountries} from './core.js';
 const $=id=>document.getElementById(id);
-let epgProviders=[],guideSources=new Map();
+let epgProviders=[],guideSources=new Map(),epgUpdatedAt=0,epgBusy=false;
+const guideView=createGuideView({getChannels:()=>filterChannels(channels,{query:$('query').value,country,category,favorites:onlyFavorites?favorites:null}),onPlay:play,onRefresh:updateGuides});
 let metadata={},catalogInfo=null,guide=new Map(),currentChannel=null,epgSequence=0;
 let playbackEngine=readJSON('cristal.playerEngine','auto');
 let channels=[],country='all',category='all',onlyFavorites=false,limit=80,hls=null,videojsPlayer=null,generation=0;
@@ -22,7 +28,7 @@ async function loadSource(s){
 }
 async function refresh(){
  $('refresh').disabled=true;$('status').textContent='Actualizando canales en español y películas…';
- try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=unifiedCatalog(results[0].data,results[1].data,metadata);fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Catálogo unificado: Argentina, deportes, películas y otros canales.';render();await initProviders();const savedURL=readJSON('cristal.epgUrl','');await loadGuide(false,true);if(savedURL)loadGuide()}
+ try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=unifiedCatalog(results[0].data,results[1].data,metadata);try{const response=await fetch('data/channel-order.json');if(response.ok)channels=orderGuideChannels(channels,await response.json())}catch{}fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Catálogo con orden de referencia Flow adaptado; los similares conservan su nombre real.';render();await initProviders();updateGuides()}
  finally{$('refresh').disabled=false}
 }
 function render(){
@@ -33,11 +39,11 @@ function render(){
   const card=document.createElement('article');card.className='card';
   const tune=document.createElement('button');tune.className='tune';tune.title=c.name;
   if(c.logo){const img=document.createElement('img');img.src=c.logo;img.loading='lazy';img.alt='';img.referrerPolicy='no-referrer';img.addEventListener('error',()=>img.remove());tune.append(img)}
-  const name=document.createElement('span');name.textContent=c.name;const tag=document.createElement('span');tag.className='tag';tag.textContent=countryName(c.country)+' · '+c.categories.map(categoryName).join(', ');name.append(tag);tune.append(name);tune.onclick=()=>play(c);
+  const name=document.createElement('span');name.textContent=(c.guideNumber?c.guideNumber+' · ':'')+c.name;const tag=document.createElement('span');tag.className='tag';tag.textContent=countryName(c.country)+' · '+c.categories.map(categoryName).join(', ')+(c.similarTo?' · Similar a '+c.similarTo:'');name.append(tag);tune.append(name);tune.onclick=()=>play(c);
   const star=document.createElement('button');star.className='star';star.textContent=favorites.has(c.id)?'★':'☆';star.setAttribute('aria-label','Favorito: '+c.name);star.setAttribute('aria-pressed',String(favorites.has(c.id)));
   star.onclick=()=>{favorites.has(c.id)?favorites.delete(c.id):favorites.add(c.id);save('cxtv.favorites',[...favorites]);render()};card.append(tune,star);$('channels').append(card);
  }
- $('more').hidden=list.length<=limit;
+ $('more').hidden=list.length<=limit;guideView.render();
 }
 function reset(){generation++;if(videojsPlayer){videojsPlayer.dispose();videojsPlayer=null}$('video').hidden=false;if(hls){hls.destroy();hls=null}$('video').pause();$('video').removeAttribute('src');$('video').load();$('quality').replaceChildren(new Option('Automática','-1'));}
 async function play(c){
@@ -84,6 +90,7 @@ $('country').onchange=()=>{country=$('country').value;limit=80;render()};$('cate
 $('favorites').onclick=()=>{onlyFavorites=!onlyFavorites;$('favorites').setAttribute('aria-pressed',String(onlyFavorites));render()};
 // Navegación espacial para control remoto y teclado. No captura flechas en campos de edición o video.
 document.addEventListener('keydown',e=>{
+ if(document.querySelector('dialog[open]')||document.activeElement?.closest('#guidePanel'))return;
  if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)||['INPUT','SELECT','VIDEO'].includes(document.activeElement?.tagName))return;
  const current=document.activeElement,r=current?.getBoundingClientRect();if(!r)return;
  const cx=r.x+r.width/2,cy=r.y+r.height/2;let best=null,score=Infinity;
@@ -105,22 +112,49 @@ function fillFacets(){
 }
 function allowedEPG(){return new Set(channels.map(c=>c.tvgId).filter(Boolean))}
 function renderGuide(){
+ guideView.setGuide(guide,epgUpdatedAt);
  const box=$('guideNow');box.replaceChildren();if(!currentChannel){box.textContent='Elegí un canal para consultar su guía.';return}
  const {now,next}=nowNext(guide,currentChannel.tvgId);
  const format=p=>new Date(p.start).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
  for(const text of [now?`Ahora · ${format(now)} — ${now.title}`:'Ahora · Sin Informar',next?`Después · ${format(next)} — ${next.title}`:'Después · Sin Informar']){const p=document.createElement('p');p.textContent=text;box.append(p)}
 }
-async function acceptGuide(text,label,aliases={},key=label){const parsed=parseXMLTV(text,allowedEPG(),aliases);if(!parsed.size)throw Error('Sin programas con tvg-id coincidente en el catálogo');guideSources.delete(key);guideSources.set(key,parsed);guide=mergeGuides([...guideSources.values()].reverse());$('epgStatus').textContent=`${label}: ${parsed.size} señales reconocidas; ${guideSources.size} fuente(s), ${guide.size} señales con datos combinados. Horarios en tu zona local.`;renderGuide()}
+function acceptGuide(text,label,aliases={},key=label){
+ const parsed=pruneGuide(parseXMLTV(text,allowedEPG(),aliases));
+ if(!parsed.size)throw Error('Sin programación vigente para los canales del catálogo');
+ guideSources.delete(key);guideSources.set(key,parsed);guide=pruneGuide(mergeGuides([...guideSources.values()].reverse()));epgUpdatedAt=Date.now();renderGuide();
+ return parsed.size;
+}
+function sourceStatus(message){$('epgStatus').textContent=message;$('guideSources').textContent=message}
+async function updateGuides(){
+ if(epgBusy)return;epgBusy=true;const seq=++epgSequence;$('refreshGuide').disabled=true;sourceStatus('Actualizando programación…');const results=[];
+ try{
+  if(!guide.size){try{const cached=await readGuideCache();if(seq!==epgSequence)return;if(cached?.entries){const ids=allowedEPG();guide=pruneGuide(new Map(cached.entries.filter(([id])=>ids.has(id))));guideSources.set('cache',guide);epgUpdatedAt=cached.updatedAt||0;renderGuide()}}catch{}}
+  const sources=[{name:'Guía incluida',url:'data/guide.xml',aliases:{},local:true},...epgProviders];
+  const custom=readJSON('cristal.epgUrl','');if(custom&&!sources.some(p=>p.url===custom))sources.push({name:'Guía personalizada',url:custom,aliases:{}});
+  for(const source of sources){
+   if(seq!==epgSequence)return;
+   try{const response=source.local?await fetch(source.url,{cache:'no-store'}):await fetchGuide(source.url);if(!response.ok)throw Error('HTTP '+response.status);const text=await readXMLTV(response);if(seq!==epgSequence)return;const count=acceptGuide(text,source.name,source.aliases,source.url);results.push(source.name+': '+count+' señales');}
+   catch(error){results.push(source.name+': no disponible ('+error.message+')')}
+   const coverage=guideCoverage(guide,channels);sourceStatus(`${coverage.available} señales con próximos programas. `+results.join(' · '));await new Promise(r=>setTimeout(r,0));
+  }
+  if(guide.size)await writeGuideCache(guide,epgUpdatedAt).catch(()=>{});
+ }finally{epgBusy=false;$('refreshGuide').disabled=false;if(seq===epgSequence){renderGuide();const coverage=guideCoverage(guide,channels);sourceStatus(`${coverage.available} señales con próximos programas. `+results.join(' · '))}}
+}
 async function loadGuide(custom=false,included=false){
  const seq=++epgSequence;const url=included?'':custom?$('epgUrl').value.trim():readJSON('cristal.epgUrl','');
- if(custom&&!safeURL(url)){$('epgStatus').textContent='Ingresá una URL HTTP o HTTPS válida.';return}
- $('epgStatus').textContent='Cargando XMLTV…';
- try{const r=await fetch(url||'data/guide.xml',{signal:AbortSignal.timeout(18000),cache:'no-store'});if(!r.ok)throw Error(`HTTP ${r.status}`);const text=await readXMLTV(r);if(seq!==epgSequence)return;const provider=epgProviders.find(p=>p.url===url);await acceptGuide(text,url?'Guía externa':'Guía incluida',provider?.aliases||{},url||'included');if(custom)save('cristal.epgUrl',url)}
- catch(e){if(seq===epgSequence)$('epgStatus').textContent=`Guía no disponible (${e.message}). Podés importar XMLTV o generarlo con iptv-org/epg.`}
+ if(custom&&!safeURL(url)){sourceStatus('Ingresá una URL HTTP o HTTPS válida.');return}
+ sourceStatus('Cargando XMLTV…');
+ try{const response=url?await fetchGuide(url):await fetch('data/guide.xml');if(!response.ok)throw Error('HTTP '+response.status);const text=await readXMLTV(response);if(seq!==epgSequence)return;const provider=epgProviders.find(p=>p.url===url);const count=acceptGuide(text,'Guía externa',provider?.aliases||{},url||'included');if(custom)save('cristal.epgUrl',url);sourceStatus('Guía cargada: '+count+' señales con datos recientes.');await writeGuideCache(guide,epgUpdatedAt).catch(()=>{});}
+ catch(error){if(seq===epgSequence)sourceStatus('Guía no disponible: '+error.message+'. Podés importar un XMLTV.')}
 }
-$('epgUrl').value=readJSON('cristal.epgUrl','');$('loadEpg').onclick=()=>loadGuide(true);
-$('epgFile').onchange=async()=>{const f=$('epgFile').files[0];if(!f)return;if(f.size>40*1024*1024){$('epgStatus').textContent='El XMLTV supera 40 MB';return}epgSequence++;try{await acceptGuide(await readXMLTV(f),'Archivo '+f.name,epgProviders.find(p=>p.url===$('epgUrl').value.trim())?.aliases||{},'file:'+f.name)}catch(e){$('epgStatus').textContent=e.message}};
-setInterval(renderGuide,60000);
+async function importGuide(file){
+ if(!file)return;if(file.size>40*1024*1024){sourceStatus('El XMLTV supera 40 MB');return}
+ const seq=++epgSequence;try{const text=await readXMLTV(file);if(seq!==epgSequence)return;const count=acceptGuide(text,'Archivo '+file.name,{},'file');sourceStatus('Archivo importado: '+count+' señales.');await writeGuideCache(guide,epgUpdatedAt).catch(()=>{});}catch(error){sourceStatus(error.message)}
+}
+$('epgUrl').value=readJSON('cristal.epgUrl','');$('gridEpgUrl').value=$('epgUrl').value;$('loadEpg').onclick=()=>loadGuide(true);
+$('gridLoadEpg').onclick=()=>{$('epgUrl').value=$('gridEpgUrl').value;loadGuide(true)};
+$('epgFile').onchange=()=>importGuide($('epgFile').files[0]);$('gridEpgFile').onchange=()=>importGuide($('gridEpgFile').files[0]);
+setInterval(renderGuide,60000);setInterval(updateGuides,4*60*60*1000);
 
 const backTop=$('backTop');
 window.addEventListener('scroll',()=>{backTop.hidden=window.scrollY<350},{passive:true});
@@ -128,6 +162,7 @@ backTop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 refresh();
 
 async function initProviders(){
- try{const r=await fetch('data/epg-providers.json');if(!r.ok)throw Error('No hay índice de proveedores');epgProviders=await r.json();$('epgProvider').replaceChildren(new Option('URL personalizada o archivo',''));for(const p of epgProviders)$('epgProvider').add(new Option(p.name,p.id));const current=epgProviders.find(p=>p.url===$('epgUrl').value.trim());$('epgProvider').value=current?.id||''}catch{epgProviders=[]}
+ try{const r=await fetch('data/epg-providers.json');if(!r.ok)throw Error('No hay índice de proveedores');epgProviders=await r.json();$('epgProvider').replaceChildren(new Option('URL personalizada o archivo',''));for(const p of epgProviders)$('epgProvider').add(new Option(p.name,p.id));const current=epgProviders.find(p=>p.url===$('epgUrl').value.trim());$('epgProvider').value=current?.id||'';$('gridProvider').replaceChildren(new Option('Elegir fuente',''));for(const p of epgProviders)$('gridProvider').add(new Option(p.name,p.id))}catch{epgProviders=[]}
 }
+$('gridProvider').onchange=()=>{const p=epgProviders.find(p=>p.id===$('gridProvider').value);if(p)$('gridEpgUrl').value=p.url};
 $('epgProvider').onchange=()=>{const p=epgProviders.find(p=>p.id===$('epgProvider').value);if(p)$('epgUrl').value=p.url};
