@@ -71,15 +71,15 @@ Los análisis corresponden a los archivos identificados por sus respectivos hash
 
 **Importante:** VirusTotal es una herramienta de análisis mediante múltiples motores de seguridad. Sus resultados no constituyen una certificación de seguridad absoluta ni garantizan la ausencia de vulnerabilidades.
 
-## Descargas v1.0.0
+## Descargas 0.3.0
 
-[Release v1.0.0](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/releases/tag/v1.0.0) · [Workflow #13 (origen de los cuatro artifacts)](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/39718101706).
+[Release 0.3.0](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/releases/tag/v0.3.0) · [Workflow de los binarios probados](https://github.com/DarkCristian/Cristal-Clear-Xuper-IPTV/actions/runs/41764242946).
 
-Los cuatro paquetes de la release corresponden exactamente a los artifacts de la ejecución #13: Windows (instalador y portable), Linux (AppImage), Android (APK debug) y extensión Chrome/Edge (ZIP). **Los binarios de #13 aún informan versión interna 0.2.2**; v1.0.0 es la etiqueta de distribución. No son binarios recompilados con numeración interna 1.0 ni están firmados. El workflow completó exitosamente; la compatibilidad con cada stream y dispositivo requiere pruebas manuales.
+Paquetes: Android APK, Windows instalador/portable, Linux AppImage y extensiones Chrome/Edge separadas. La publicación utiliza los mismos binarios probados del PR #6, sin recompilarlos; versión interna 0.3.0 y Android versionCode 7, con firma debug. Las descargas incluyen SHA256SUMS.txt. [Novedades, validación y alcance](docs/RELEASE-0.3.0.md).
 
 ## Interfaz y motores
 
-El catálogo combinado usa `spa.m3u` y `movies.m3u` y deduplica URLs. En esta rama de prueba 0.3.0, el orden usa un modelo nacional de Flow adaptado, con variantes juntas y señales adicionales al final. La interfaz ofrece vistas **Canales** y **Guía de programación**, con grilla horaria, actualización de fuentes públicas, caché e importación manual de XMLTV. La cobertura de programación sigue siendo parcial y se identifica por canal; ver [alcance de la grilla](docs/EPG-GRID.md).
+El catálogo combinado usa `spa.m3u` y `movies.m3u` y deduplica URLs. En la versión 0.3.0, el orden usa un modelo nacional de Flow adaptado, con variantes juntas y señales adicionales al final. La interfaz ofrece vistas **Canales** y **Guía de programación**, con grilla horaria, actualización de fuentes públicas, caché e importación manual de XMLTV. La cobertura de programación sigue siendo parcial y se identifica por canal; ver [alcance de la grilla](docs/EPG-GRID.md).
 
 En web, Chrome/Edge, Windows y Linux se ofrecen HTML5, HLS.js y Video.js (archivos locales). En Android se utiliza Media3 nativo. La disponibilidad real depende de CORS, códecs y de cada origen. La selección de Video.js no garantiza compatibilidad con DASH u otros formatos.
 
@@ -207,6 +207,6 @@ La web y Android WebView pueden bloquear URLs sin CORS. En ese caso descargar el
 
 Cuadro opcional con aviso breve de derechos de terceros, diseño oscuro y verde menta, y aportes sugeridos desde ARS 500 por Mercado Pago o USD 10 por PayPal. QR centrado, botón **Donar** y botón **Saltar**, en ese orden. Disponible en Android, Windows, Linux y extensiones Chrome/Edge; se muestra en cada arranque y puede volver a abrirse desde **Colaborar**. [Colaborar en Monedita](https://monedita.ar/cristalcleariptv). [Funcionamiento y validación](docs/WELCOME.md).
 
-## Vista de grilla EPG (prueba 0.3.0)
+## Vista de grilla EPG (0.3.0)
 
 Botón **Guía de programación**, línea de tiempo de seis horas, filtros compartidos, detalle de programas y apertura del canal en vivo. Actualiza fuentes públicas al iniciar y cada cuatro horas, con caché y copia reciente generada durante la compilación. Los canales sin cobertura muestran **Sin información**. Orden nacional de referencia Flow adaptado: variantes consecutivas, similares identificados y canales adicionales al final. [Alcance, fuentes, funcionamiento y pruebas](docs/EPG-GRID.md).

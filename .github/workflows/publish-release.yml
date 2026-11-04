@@ -1,0 +1,127 @@
+name: Publish verified v0.3.0 and replace old releases
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-release.yml']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: publish-verified-release-0.3.0
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: v0.3.0
+      VERIFIED_RUN: '41764242946'
+      VERIFIED_SHA: aaa36c478866a3d7928bdf4d70d4f5deb2dc9e9c
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require the exact successful and merged build
+        run: |
+          set -euo pipefail
+          gh api "repos/$GH_REPO/actions/runs/$VERIFIED_RUN" > verified-run.json
+          python3 - <<'PY'
+          import json,os
+          run=json.load(open('verified-run.json'))
+          assert run['head_sha']==os.environ['VERIFIED_SHA'], 'Unexpected build revision'
+          assert run['status']=='completed' and run['conclusion']=='success', 'Build is not successful'
+          PY
+          git merge-base --is-ancestor "$VERIFIED_SHA" HEAD
+      - uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-android-debug
+          run-id: 41764242946
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/android
+      - uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-windows
+          run-id: 41764242946
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-linux
+          run-id: 41764242946
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/linux
+      - uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-extension-chrome
+          run-id: 41764242946
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/chrome
+      - uses: actions/download-artifact@v4
+        with:
+          name: cristal-clear-extension-edge
+          run-id: 41764242946
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: assets/edge
+      - name: Package the tested binaries without recompiling
+        run: |
+          set -euo pipefail
+          mkdir publish
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          apk=list(Path('assets/android').glob('*.apk'))
+          assert len(apk)==1, 'Expected one tested APK'
+          assert list(Path('assets/windows').glob('*.exe')), 'Missing Windows executables'
+          assert list(Path('assets/linux').glob('*.AppImage')), 'Missing Linux AppImage'
+          for browser in ['chrome','edge']:
+              assert (Path('assets')/browser/'manifest.json').is_file(), 'Missing extension manifest'
+          shutil.copyfile(apk[0],'publish/CristalClear-IPTV-0.3.0-Android.apk')
+          PY
+          (cd assets/windows && zip -qr ../../publish/CristalClear-IPTV-0.3.0-Windows.zip .)
+          (cd assets/linux && zip -qr ../../publish/CristalClear-IPTV-0.3.0-Linux.zip .)
+          (cd assets/chrome && zip -qr ../../publish/CristalClear-IPTV-0.3.0-Chrome.zip .)
+          (cd assets/edge && zip -qr ../../publish/CristalClear-IPTV-0.3.0-Edge.zip .)
+          (cd publish && sha256sum *.apk *.zip > SHA256SUMS.txt)
+      - name: Publish the release with all assets
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" --json isDraft > release-state.json 2>/dev/null; then
+            if python3 -c 'import json; assert json.load(open("release-state.json"))["isDraft"]'; then
+              gh release upload "$RELEASE_TAG" publish/* --clobber
+              gh release edit "$RELEASE_TAG" --draft=false --latest
+            fi
+          else
+            gh release create "$RELEASE_TAG" publish/* --target "$GITHUB_SHA" --draft --title 'CristalClear IPTV 0.3.0' --notes-file docs/RELEASE-0.3.0.md
+            gh release edit "$RELEASE_TAG" --draft=false --latest
+          fi
+      - name: Verify published downloads and checksums
+        run: |
+          set -euo pipefail
+          gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" > published-release.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          release=json.load(open('published-release.json'))
+          assert not release['draft'] and not release['prerelease'], 'Release is not public and stable'
+          assert {asset['name'] for asset in release['assets']}=={p.name for p in Path('publish').iterdir()}, 'Release assets mismatch'
+          PY
+          gh release download "$RELEASE_TAG" --dir verified-downloads
+          diff publish/SHA256SUMS.txt verified-downloads/SHA256SUMS.txt
+          (cd verified-downloads && sha256sum -c SHA256SUMS.txt)
+      - name: Remove only the previously inventoried releases after verification
+        run: |
+          set -euo pipefail
+          gh api "repos/$GH_REPO/releases?per_page=100" > releases-before-cleanup.json
+          python3 - <<'PY'
+          import json,os,subprocess
+          releases=json.load(open('releases-before-cleanup.json'))
+          # Exact release ID inventoried before this operation and explicitly authorized for removal.
+          old_ids={420294756}
+          for release in releases:
+              if release['id'] in old_ids:
+                  assert release['tag_name']!='v0.3.0'
+                  subprocess.run(['gh','api','--method','DELETE',f'repos/{os.environ["GH_REPO"]}/releases/{release["id"]}'],check=True)
+          PY
+          gh release view "$RELEASE_TAG" --json url,tagName,assets >> "$GITHUB_STEP_SUMMARY"

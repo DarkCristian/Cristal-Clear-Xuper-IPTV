@@ -1,6 +1,6 @@
-# EPG y grilla — versión de prueba 0.3.0
+# EPG y grilla — versión 0.3.0
 
-Rama `feature/epg-grid-preview`, basada en main después de fusionar el banner. Conserva la bienvenida con QR en cada inicio.
+Integrado en `main` mediante el PR #6, después de fusionar el banner. Conserva la bienvenida con QR en cada inicio.
 
 ## Uso
 
@@ -28,4 +28,4 @@ El sitio adapta la grilla por servicio y zona. La consulta pública por zona dev
 
 ## Validación
 
-Pruebas unitarias: clipping y huecos, prioridades entre fuentes, cobertura/expiración, orden de variantes/sustitutos y proxy de escritorio. Pruebas de navegador con programación sintética identificada como «de prueba»: grilla móvil/escritorio, filtros, navegación horaria, descripción sin HTML ejecutable, importación, recuperación de caché y transporte nativo simulado. Las capturas y los artifacts se publican en el workflow del PR. La APK necesita validación física del usuario; no se certifican todos los streams ni todas las fuentes.
+Pruebas unitarias: clipping y huecos, prioridades entre fuentes, cobertura/expiración, orden de variantes/sustitutos y proxy de escritorio. Pruebas de navegador con programación sintética identificada como «de prueba»: grilla móvil/escritorio, filtros, navegación horaria, descripción sin HTML ejecutable, importación, recuperación de caché y transporte nativo simulado. Las capturas y los artifacts se publican en el workflow del PR. El autor del proyecto confirmó el funcionamiento de Android; no se certifican todos los streams ni todas las fuentes.

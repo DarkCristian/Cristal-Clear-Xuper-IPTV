@@ -10,7 +10,7 @@ La frase de mantenimiento es un compromiso de mejoras, sin prometer disponibilid
 
 ## Compilación y prueba
 
-Versión interna 0.2.4 (Android versionCode 6). `Build experimental clients` compila los cambios de la rama y los PR a main. Entrega APK debug, instalador/portable Windows, AppImage Linux, extensión Chrome, extensión Edge y web. Edge y Chrome usan el mismo código Manifest V3; los paquetes se ofrecen separados para identificarlos al descargar. El workflow histórico de release v1.0 no se usa para estos artifacts porque recupera binarios anteriores.
+Versión interna 0.3.0 (Android versionCode 7). `Build experimental clients` compila los cambios de la rama y los PR a main. Entrega APK debug, instalador/portable Windows, AppImage Linux, extensión Chrome, extensión Edge y web. Edge y Chrome usan el mismo código Manifest V3; los paquetes se ofrecen separados para identificarlos al descargar. El workflow histórico de release v1.0 no se usa para estos artifacts porque recupera binarios anteriores.
 
 Validar en dispositivo: arranque, Saltar sin donar, cerrar y volver a iniciar sin borrar datos, reapertura desde Colaborar, QR con cámara, pago en navegador externo, regreso a la app, foco de teclado/Escape, scroll en móvil y catálogo/reproducción después de cerrar. Una compilación CI exitosa no certifica un pago real ni reproducción en cada dispositivo.
 
