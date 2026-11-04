@@ -2,6 +2,8 @@ package ar.com.clearxuper.tv;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.ActivityNotFoundException;
 import android.content.res.Configuration;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -49,6 +51,15 @@ public class MainActivity extends Activity {
         web.addJavascriptInterface(new Object() {
             @JavascriptInterface public void play(String url, String name) {
                 runOnUiThread(() -> openPlayer(url, name));
+            }
+            @JavascriptInterface public void openDonation() {
+                runOnUiThread(() -> {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://monedita.ar/cristalcleariptv")));
+                    } catch (ActivityNotFoundException | SecurityException error) {
+                        Toast.makeText(MainActivity.this, "No se pudo abrir un navegador. Escaneá el QR para colaborar.", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             @JavascriptInterface public void stop() { runOnUiThread(() -> closePlayer()); }
         }, "AndroidPlayer");
