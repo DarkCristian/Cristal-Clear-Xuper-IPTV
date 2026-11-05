@@ -1,4 +1,6 @@
 // No pago, registro ni temporizador son necesarios para continuar.
+const isAndroidTv = new URLSearchParams(location.search).get('device') === 'tv';
+if (isAndroidTv) document.documentElement.classList.add('android-tv');
 const dialog = document.getElementById('welcome');
 const opener = document.getElementById('showWelcome');
 const status = document.getElementById('donationStatus');
@@ -8,7 +10,7 @@ function openWelcome() {
  previousFocus = document.activeElement;
  dialog.showModal();
  dialog.scrollTop = 0;
- document.getElementById('welcomeTitle').focus({preventScroll:true});
+ (isAndroidTv ? document.getElementById('skipWelcome') : document.getElementById('welcomeTitle')).focus({preventScroll:true});
  document.documentElement.classList.add('welcome-open');
 }
 function closeWelcome() { dialog.close(); }
