@@ -17,3 +17,67 @@ main{display:block}.player[hidden]{display:none}.player{position:relative;top:au
 
 /* Android TV: ventana contenida en 720p y botón accesible con control remoto. */
 .android-tv .welcome-overlay{padding:16px;align-items:center}.android-tv .welcome-card{max-height:calc(100dvh - 32px);overflow-y:auto;width:min(92vw,780px);padding:18px 28px}.android-tv .welcome-card h1{font-size:clamp(20px,3vw,28px);margin:4px 0 10px}.android-tv .welcome-card p{font-size:clamp(13px,1.8vw,17px);margin:8px 0;line-height:1.35}.android-tv .welcome-symbol{font-size:25px}.android-tv #welcomeClose{position:sticky;bottom:0;min-height:52px;font-size:19px}.android-tv button:focus-visible{outline:4px solid #71f4bd;outline-offset:2px}
+
+
+/* Android TV: QR centrado, donar a la izquierda y saltar a la derecha.
+   Diseño ajustado a 720p y control remoto; no afecta la interfaz móvil. */
+html.android-tv .welcome {
+ width:min(1050px,calc(100vw - 48px));
+ max-height:calc(100dvh - 32px);
+ overflow-y:auto;
+}
+html.android-tv .welcome-content {
+ padding:12px 26px 14px;
+}
+html.android-tv .welcome-brand {gap:3px}
+html.android-tv .welcome-brand img {width:30px;height:30px}
+html.android-tv .welcome-brand b {font-size:20px}
+html.android-tv .welcome h2 {font-size:clamp(20px,2.8vw,29px);margin:5px 0}
+html.android-tv .welcome p {font-size:clamp(12px,1.35vw,16px);line-height:1.25;margin:6px 0}
+html.android-tv .welcome .welcome-legal {font-size:12px}
+html.android-tv .welcome .welcome-highlight {font-size:18px}
+html.android-tv .welcome-actions {
+ display:grid;
+ grid-template-columns:minmax(140px,1fr) 160px minmax(140px,1fr);
+ grid-template-rows:auto auto;
+ align-items:center;
+ justify-items:center;
+ column-gap:18px;
+ row-gap:3px;
+ margin-top:8px;
+}
+html.android-tv .welcome-actions .donation-qr {
+ grid-column:2;
+ grid-row:1;
+ box-sizing:border-box;
+ width:clamp(110px,14vh,150px);
+ height:clamp(110px,14vh,150px);
+ max-width:100%;
+ padding:5px;
+}
+html.android-tv .welcome-actions .donation-address {grid-column:2;grid-row:2;font-size:11px}
+html.android-tv .welcome-actions .donate-button {
+ grid-column:1;grid-row:1;
+ width:100%;max-width:220px;
+ box-sizing:border-box;
+ font-size:18px;padding:13px 10px;
+}
+html.android-tv .welcome-actions #skipWelcome {
+ grid-column:3;grid-row:1;
+ width:100%;max-width:220px;
+ box-sizing:border-box;
+ font-size:18px;padding:13px 10px;
+}
+html.android-tv .welcome-actions #donationStatus {grid-column:1 / -1;grid-row:3}
+html.android-tv .welcome-actions :is(a,button):focus {
+ outline:4px solid #71f4bd;
+ outline-offset:4px;
+}
+@media(max-height:540px) {
+ html.android-tv .welcome-content {padding:6px 20px}
+ html.android-tv .welcome h2 {font-size:20px;margin:3px 0}
+ html.android-tv .welcome p {font-size:12px;margin:3px 0}
+ html.android-tv .welcome .welcome-highlight {font-size:15px}
+ html.android-tv .welcome-actions {margin-top:4px}
+ html.android-tv .welcome-actions .donation-qr {width:100px;height:100px}
+}
