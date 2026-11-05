@@ -1,6 +1,7 @@
 plugins { id 'com.android.application' }
 android { namespace 'ar.com.clearxuper.tv'; compileSdk 35
  defaultConfig { applicationId 'ar.com.clearxuper.tv'; minSdk 23; targetSdk 35; versionCode 6; versionName '0.2.4' }
+ buildFeatures { buildConfig true }
  flavorDimensions 'device'
  productFlavors {
   mobile { dimension 'device' }
