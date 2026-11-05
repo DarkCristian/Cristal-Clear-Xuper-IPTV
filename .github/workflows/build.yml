@@ -3,10 +3,8 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
-  pull_request:
-    branches: [main]
   push:
-    branches: [main, feature/unified-catalog-desktop-ux]
+    branches: [main, feature/unified-catalog-desktop-ux, 'feature/android-tv-dedicated']
 concurrency:
   group: clients-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
