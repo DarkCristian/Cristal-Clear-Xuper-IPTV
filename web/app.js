@@ -1,3 +1,4 @@
+import {orderGuideChannels} from './channel-order.js';
 import {parseXMLTV,nowNext,mergeGuides,readXMLTV} from './epg.js';
 import {SOURCES,parseM3U,mergeChannels,filterChannels,unifiedCatalog,safeURL,compareCountries} from './core.js';
 const $=id=>document.getElementById(id);
@@ -22,7 +23,7 @@ async function loadSource(s){
 }
 async function refresh(){
  $('refresh').disabled=true;$('status').textContent='Actualizando canales en español y películas…';
- try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=unifiedCatalog(results[0].data,results[1].data,metadata);fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Catálogo unificado: Argentina, deportes, películas y otros canales.';render();await initProviders();const savedURL=readJSON('cristal.epgUrl','');await loadGuide(false,true);if(savedURL)loadGuide()}
+ try{const results=await Promise.all(SOURCES.map(loadSource));try{const r=await fetch('data/metadata.json');catalogInfo=await r.json();metadata=catalogInfo.channels||{}}catch{} channels=unifiedCatalog(results[0].data,results[1].data,metadata);try{const response=await fetch('data/channel-order.json');if(response.ok)channels=orderGuideChannels(channels,await response.json())}catch{}fillFacets();$('status').textContent=results.map(x=>x.label).join(' / ')+' · Catálogo unificado: Argentina, deportes, películas y otros canales.';render();await initProviders();const savedURL=readJSON('cristal.epgUrl','');await loadGuide(false,true);if(savedURL)loadGuide()}
  finally{$('refresh').disabled=false}
 }
 function render(){
@@ -33,7 +34,7 @@ function render(){
   const card=document.createElement('article');card.className='card';
   const tune=document.createElement('button');tune.className='tune';tune.title=c.name;
   if(c.logo){const img=document.createElement('img');img.src=c.logo;img.loading='lazy';img.alt='';img.referrerPolicy='no-referrer';img.addEventListener('error',()=>img.remove());tune.append(img)}
-  const name=document.createElement('span');name.textContent=c.name;const tag=document.createElement('span');tag.className='tag';tag.textContent=countryName(c.country)+' · '+c.categories.map(categoryName).join(', ');name.append(tag);tune.append(name);tune.onclick=()=>play(c);
+  const name=document.createElement('span');name.textContent=(c.guideNumber?c.guideNumber+' · ':'')+c.name;const tag=document.createElement('span');tag.className='tag';tag.textContent=countryName(c.country)+' · '+c.categories.map(categoryName).join(', ')+(c.similarTo?' · Similar a '+c.similarTo:'');name.append(tag);tune.append(name);tune.onclick=()=>play(c);
   const star=document.createElement('button');star.className='star';star.textContent=favorites.has(c.id)?'★':'☆';star.setAttribute('aria-label','Favorito: '+c.name);star.setAttribute('aria-pressed',String(favorites.has(c.id)));
   star.onclick=()=>{favorites.has(c.id)?favorites.delete(c.id):favorites.add(c.id);save('cxtv.favorites',[...favorites]);render()};card.append(tune,star);$('channels').append(card);
  }
