@@ -27,9 +27,10 @@ public class MainActivity extends Activity {
     private PlayerView playerView;
     private boolean foreground;
 
+    private boolean isTv() { return "tv".equals(BuildConfig.FLAVOR); }
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(isTv() ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         web = new WebView(this);
         setContentView(web);
         web.getSettings().setJavaScriptEnabled(true);
@@ -63,7 +64,8 @@ public class MainActivity extends Activity {
             }
             @JavascriptInterface public void stop() { runOnUiThread(() -> closePlayer()); }
         }, "AndroidPlayer");
-        web.loadUrl("https://appassets.androidplatform.net/assets/www/index.html");
+        if (isTv()) web.setWebChromeClient(new WebChromeClient());
+        web.loadUrl("https://appassets.androidplatform.net/assets/www/index.html?device=" + (isTv() ? "tv" : "mobile"));
     }
 
     private void openPlayer(String url, String name) {
@@ -87,7 +89,7 @@ public class MainActivity extends Activity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         });
         dialog.show();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        setRequestedOrientation(isTv() ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         resizePlayerWindow();
         playerView.requestFocus();
         player.addListener(new Player.Listener() {
