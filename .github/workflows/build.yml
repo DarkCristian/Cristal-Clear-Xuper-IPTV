@@ -96,9 +96,14 @@ jobs:
       - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
       - run: npm test
       - run: node scripts/prepare.mjs
-      - run: gradle -p android assembleDebug
+      - run: gradle -p android assembleMobileDebug assembleTvDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: cristal-clear-android-debug
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: cristal-clear-android-mobile-debug
+          path: android/app/build/outputs/apk/mobile/debug/*.apk
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cristal-clear-android-tv-debug
+          path: android/app/build/outputs/apk/tv/debug/*.apk
           if-no-files-found: error
